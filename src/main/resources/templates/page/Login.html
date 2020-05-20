@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style type="text/css">
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div style="margin: 20% 25%">
+    <p th:if="${param.error}" class="bg-danger">有错误，请重试！</p>
+    <div class="starter-template">
+        <h1 th:text="${msg.title}"></h1>
+        <p class="bg-primary" th:text="${msg.content}"></p>
+    </div>
+    <form class="form-horizontal" name="form"  method="post" th:action="@{/login}" action="/login" onsubmit="return checkPWD(form.password,form.checkPassword)">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon1">@</span>
+            <input type="text" name="username" class="form-control" placeholder="studentID" aria-describedby="sizing-addon1">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon2">@</span>
+            <input type="password" name="password" class="form-control" placeholder="password" aria-describedby="sizing-addon2">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon3">@</span>
+            <input type="password" name="checkPassword" class="form-control" placeholder="checkPassword" aria-describedby="sizing-addon3">
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="登陆" class="btn btn-lg btn-primary"/>
+                <span style="width: 140px"></span>
+                <input type="button" value="注册" class="btn btn-lg btn-primary" onclick="window.location.href='/sign'"/>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function checkPWD(password,checkPassword) {
+        if(password.value !== checkPassword.value){
+            alert("密码不一致");
+            return false;
+        }else {
+            return true;
+        }
+    }
+</script>
+</body>
+</html>
