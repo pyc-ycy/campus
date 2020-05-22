@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>用户信息更新</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <style type="text/css">
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div style="margin: 20% 25%">
+    <p th:if="${param.error}" class="bg-danger">有错误，请重试！</p>
+    <div class="starter-template">
+        <h1 th:text="${msg.title}"></h1>
+        <p class="bg-primary" th:text="${msg.content}"></p>
+    </div>
+    <form class="form-horizontal" name="form"  method="post" th:action="@{/updateUInfo}" onsubmit="return check(form.studentID,form.username,form.weChat,form.TencentQQ)">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon1">ID</span>
+            <input type="text" name="studentID" class="form-control" th:value="${curUse.getStudentID()}"
+                   readonly="readonly" aria-describedby="sizing-addon1">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon4">U</span>
+            <input type="text" name="username" class="form-control" th:value="${curUse.getName()}" aria-describedby="sizing-addon4">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon5">W</span>
+            <input type="text" name="weChat" class="form-control" th:value="${curUse.getWeChat()}" aria-describedby="sizing-addon5">
+        </div>
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon" id="sizing-addon">Q</span>
+            <input type="text" name="TencentQQ" class="form-control" th:value="${curUse.getQQ()}" aria-describedby="sizing-addon">
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="submit" value="更新" class="btn btn-lg btn-primary"/>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        function check(ID,Name,W,Q) {
+            if(ID.value !=="" && Name.value !== "" && W.value !== "" && Q.value !== ""){
+                return true;
+            }
+            else {
+                alert("请将每个信息项的信息填写完整");
+                return false;
+            }
+        }
+    </script>
+</div>
+</body>

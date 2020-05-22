@@ -13,13 +13,13 @@ import com.pyc.campus.domain.Msg;
 import com.pyc.campus.domain.Student;
 import com.pyc.campus.domain.SysRole;
 import com.pyc.campus.domain.SysUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -28,22 +28,81 @@ import java.util.List;
 @Controller
 public class WebController {
 
-    @Autowired
+    final
     StudentRepository studentRepository;
-    @Autowired
+    final
     SysUserRepository sysUserRepository;
+
+    public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository) {
+        this.studentRepository = studentRepository;
+        this.sysUserRepository = sysUserRepository;
+    }
 
     @RequestMapping("/home")
     public String home(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
         Msg msg = new Msg(
                 "欢迎",
-                currentStudentId+",同学，欢迎使用 Campus！",
+                s.getName()+",同学，欢迎使用 Campus！",
                 ""
         );
         model.addAttribute("msg", msg);
+        model.addAttribute("curUse",s);
         return "page/Home";
+    }
+    @RequestMapping("/userCenter")
+    public String userCenter(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        Msg msg = new Msg("","","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        return "page/UserCenter";
+    }
+    @RequestMapping("/updateUserInfo")
+    public String updateUserInfo(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        Msg msg = new Msg(
+                "提示！",
+                "学号作为用户标识ID，不允许更改",
+                ""
+        );
+        model.addAttribute("msg", msg);
+        return "page/UpdateUserInfo";
+    }
+    @RequestMapping("/updateUInfo")
+    public String updateUInfo(Model model,HttpSession session,
+                              @Param("username") String username,
+                              @Param("weChat") String weChat,
+                              @RequestParam(value = "TencentQQ", required = false) String qq){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        System.out.println("QQ:"+qq);
+        int result = studentRepository.update(username,weChat,qq,currentStudentId);
+        if(result==0){
+            Msg msg = new Msg(
+                    "提示",
+                    "对不起，是我们的错，信息没有成功更新，请再试几次，或者连续网站管理员",
+                    ""
+            );
+            model.addAttribute("msg",msg);
+            return "page/UpdateUserInfo";
+        }
+        Msg msg = new Msg(
+                "提示",
+                "信息更新成功！",
+                ""
+        );
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        model.addAttribute("msg",msg);
+        return "page/UserCenter";
     }
     @RequestMapping("/signUP")
     public String signUP(Model model,
@@ -51,7 +110,7 @@ public class WebController {
                          @Param("password") String password,
                          @Param("username") String username,
                          @Param("weChat") String weChat,
-                         @Param("QQ") String qq) {
+                         @RequestParam(value = "QQ", required = false) String qq) {
         Student student = studentRepository.findPasswordByStudentID(studentID);
         if (student != null) {
             return "page/SignError";

@@ -4,10 +4,22 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>用户中心</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/swiper.css">
     <link rel="stylesheet" type="text/css" href="../../static/css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
     <style>
         body {
             background: #eee;
@@ -18,34 +30,43 @@
             padding: 0;
         }
 
-        #banner {
-            height: 630px;
+        caption {
+            font-size: 26px;
         }
 
-        .swiper-container {
-            width: 100%;
-            height: 632px;
+        td {
+            font-size: 28px;
         }
 
-        .swiper-slide {
-            text-align: center;
-            font-size: 18px;
-            background: #fff;
-
-            /* Center slide text vertically */
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: -webkit-flex;
-            display: flex;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            -webkit-align-items: center;
-            align-items: center;
+        table {
+            font-family: verdana, arial, sans-serif;
+            font-size: 11px;
+            color: #333333;
+            border-width: 2px;
+            border-color: black;
+            border-style: solid;
+            border-collapse: collapse;
         }
+
+        table th {
+            background-color: #c3dde0;
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+
+        tr:hover {
+            background-color: #d4e3e5;
+        }
+
+        td:hover {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #a9c6c9;
+        }
+
         .starter-template {
             padding: 40px 15px;
             text-align: center;
@@ -82,40 +103,47 @@
             <h1>Campus</h1>
         </div>
         <ul class="right">
-            <li><a href="#">Home</a></li>
+            <li><a href="/home">Home</a></li>
             <li><a href="#">学习资源</a></li>
             <li><a href="#">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            </li>
         </ul>
     </div>
 </div>
-<div class="starter-template">
-    <h1 th:text="${msg.title}"></h1>
-    <p class="bg-primary" th:text="${msg.content}"></p>
-</div>
-<!-- 页面的banner部分 -->
-<div id="banner">
-    <!-- <div class="container"></div> -->
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide"><img src="../../static/images/campus/mmexport1576931896321.jpg" alt="pic"
-                                           width="100%;" height="630"></div>
-            <div class="swiper-slide"><img src="../../static/images/campus/mmexport1576931902556.jpg" alt="pic"
-                                           width="100%;" height="630"></div>
-            <div class="swiper-slide"><img src="../../static/images/campus/mmexport1576931908791.jpg" alt="pic"
-                                           width="100%;" height="630"></div>
-            <div class="swiper-slide"><img src="../../static/images/campus/mmexport1576931926348.jpg" alt="pic"
-                                           width="100%;" height="630"></div>
-
-        </div>
-        <!-- Add Pagination -->
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-next">1</div>
-        <div class="swiper-button-prev"></div>
+<div style="margin: 20%">
+    <div class="starter-template">
+        <h1 th:text="${msg.title}"></h1>
+        <p class="bg-primary" th:text="${msg.content}"></p>
     </div>
-    <div class="banner-nav-bg"></div>
+    <table style="margin: 10% 40%; width: 200px;">
+        <caption>用户信息</caption>
+        <tbody>
+        <tr>
+            <td>Name:</td>
+            <td th:text="${curUse.getName()}"></td>
+        </tr>
+        <tr>
+            <td>StudentID:</td>
+            <td th:text="${curUse.getStudentID()}"></td>
+        </tr>
+        <tr>
+            <td>QQ:</td>
+            <td th:text="${curUse.getQQ()}"></td>
+        </tr>
+        <tr>
+            <td>WeChat:</td>
+            <td th:text="${curUse.getWeChat()}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="margin: 0 auto">
+        <input type="button" class="btn btn-lg btn-primary" onclick="window.location.href='/updateUserInfo'"
+               value="更新信息">
+    </div>
 </div>
 <div id="serve">
     <div class="container">
