@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学习资源</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/swiper.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
+    <style>
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+        .main{
+            margin: 10px auto;
+            width: 65%;
+            height: 1400px;
+            background-color: yellowgreen;
+        }
+        .main p{
+            font-size: 18px;
+            text-indent: 2em;
+        }
+        .leftContent{
+            position: fixed;
+            left: 0;
+            top:14%;
+            bottom: 50px;
+            width: 15%;
+            height: 80%;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+<!--页面顶部-->
+<div id="top">
+    <div class="container"></div>
+</div>
+<!-- 页面的头部 -->
+<div id="header">
+    <div class="container">
+        <div class="header_left left">
+            <div class="xlwb"></div>
+            <div class="txwb"></div>
+            <div class="tel">150-1436-6986</div>
+        </div>
+        <ul class="right">
+            <li><a href="/login">登录</a></li>
+            <li><a href="/sign">注册</a></li>
+        </ul>
+    </div>
+</div>
+<!-- 页面的导航 -->
+<div id="nav">
+    <div class="container">
+        <div class="logo left">
+            <h1>Campus</h1>
+        </div>
+        <ul class="right">
+            <li><a href="/">Home</a></li>
+            <li><a href="#">学习资源</a></li>
+            <li><a href="#">校内新闻</a></li>
+        </ul>
+    </div>
+</div>
+<div class="leftContent">
+
+</div>
+<!--页面主体部分-->
+<div class="main">
+
+</div>
+<div id="serve">
+    <div class="container">
+        <ul>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="after_sale">
+    <div class="container">
+        <ul>
+            <li>
+                <ol>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">15014366986</a></li>
+                    <li><a href="#">2923616405</a></li>
+                    <li><a href="#">pyc852164</a></li>
+                </ol>
+            </li>
+            <li>
+                <ol>
+                    <li><a href="#">关于我</a></li>
+                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
+                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
+                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
+                </ol>
+            </li>
+            <li>
+                <ol>
+                    <li>关于我</li>
+                    <li>我的博客文章，</li>
+                    <li>我的代码托管平台，</li>
+                    <li>也是代码托管平台，</li>
+                </ol>
+            </li>
+            <li>
+                <ol>
+                    <li>关于我</li>
+                    <li>可以了解我的所学</li>
+                    <li>可以看到我的开源代码</li>
+                    <li>为避免Github访问不了</li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="footer">
+    <div class="container">
+        <p>
+            <span>Campus logo</span>
+            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
+        </p>
+    </div>
+</div>
+<a id="btn" href="javascript:;" style='position:fixed;right: 0px; bottom: 25%;font-size: 24px;'>
+    <img src="../../static/images/toTop1.png" alt="pic">
+</a>
+<script type="text/javascript" src="../../static/js/swiper.js"></script>
+<script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="../../static/js/oppo.js"></script>
+<script>
+    window .onload = function () {
+
+        let tp = document.getElementById("btn");
+        tp.style.display = "none";
+        let timer = null;
+        tp.onclick = function () {
+            timer = setInterval(function () {
+                let backTop = document.documentElement.scrollTop || document.body.scrollTop;
+                // 越滚月慢
+                let speedTop = backTop/5;
+                document.documentElement.scrollTop -= backTop - speedTop;
+                if(backTop === 0){
+                    clearInterval(timer);
+                }
+            },30);
+        }
+        let pageHeight = 700;
+        let nav = document.getElementById("nav");
+        let navTop = nav.offsetTop;
+        window .onscroll = function () {
+            let backTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (backTop > pageHeight) {
+                tp.style.display = "block";
+            } else {
+                tp.style.display = "none";
+            }
+            if (backTop >= navTop) {
+                nav.style.position = "fixed";
+                nav.style.top = "0";
+                nav.style.left = "0";
+                nav.style.zIndex = "100";
+            } else {
+                nav.style.position = "";
+            }
+        }
+    }
+
+</script>
+</body>
+</html>
