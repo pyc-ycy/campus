@@ -52,6 +52,14 @@ public class WebController {
         model.addAttribute("curUse",s);
         return "page/Home";
     }
+    @RequestMapping("/learn")
+    public String learn(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/Learn";
+    }
     @RequestMapping("/userCenter")
     public String userCenter(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
@@ -61,6 +69,38 @@ public class WebController {
         model.addAttribute("msg",msg);
         model.addAttribute("curUse",s);
         return "page/UserCenter";
+    }
+    @RequestMapping("/toChangePWD")
+    public String toChangePWD(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUser", s);
+        Msg msg = new Msg("","","");
+        model.addAttribute("msg",msg);
+        return "page/ChangePWD";
+    }
+    @RequestMapping("/saveChangePWD")
+    public String saveChangePWD(Model model,HttpSession session,
+                                @Param("password")String password){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        int key = studentRepository.saveChangePWD(password,s.getStudentID());
+        if(key!=0){
+            int t = sysUserRepository.updatePassword(password,s.getStudentID());
+            if(t>0){
+                return "/page/Oppo";
+            }else {
+                Msg msg = new Msg("提示！","修改密码出错，请重新尝试！！！","");
+                model.addAttribute("msg",msg);
+                return "page/ChangePWD";
+            }
+        }else{
+            Msg msg = new Msg("提示！","修改密码出错，请重新尝试！！！","");
+            model.addAttribute("msg",msg);
+            return "page/ChangePWD";
+        }
     }
     @RequestMapping("/updateUserInfo")
     public String updateUserInfo(Model model, HttpSession session){
@@ -152,4 +192,5 @@ public class WebController {
         model.addAttribute("msg",msg);
         return "page/Sign";
     }
+
 }

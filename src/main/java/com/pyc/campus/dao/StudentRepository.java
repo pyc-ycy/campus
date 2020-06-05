@@ -21,4 +21,8 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Transactional
     @Query("update Student s set s.name=?1,s.weChat=?2, s.QQ=?3 where s.studentID=?4")
     int update(String name, String WeChat, String QQ, String studentID);
+    @Modifying
+    @Transactional
+    @Query("update Student s set s.password=?1 where s.studentID=?2")
+    int saveChangePWD(String password, String studentID);
 }

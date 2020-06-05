@@ -9,7 +9,14 @@ package com.pyc.campus.dao;
 
 import com.pyc.campus.domain.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SysUserRepository extends JpaRepository<SysUser,Long> {
     SysUser findByUsername(String username);
+    @Modifying
+    @Transactional
+    @Query("update SysUser s set s.password=?1 where s.username=?2")
+    int updatePassword(String password, String username);
 }

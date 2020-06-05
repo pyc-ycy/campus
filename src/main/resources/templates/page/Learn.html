@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <title>学习资源</title>
@@ -94,8 +96,11 @@
             <div class="tel">150-1436-6986</div>
         </div>
         <ul class="right">
-            <li><a href="/login">登录</a></li>
-            <li><a href="/sign">注册</a></li>
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn btn-link" th:value="安全退出">
+                </form>
+            </li>
         </ul>
     </div>
 </div>
@@ -106,9 +111,12 @@
             <h1>Campus</h1>
         </div>
         <ul class="right">
-            <li><a href="/">Home</a></li>
+            <li><a href="/home">Home</a></li>
             <li><a href="#">学习资源</a></li>
             <li><a href="#">校内新闻</a></li>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
         </ul>
     </div>
 </div>

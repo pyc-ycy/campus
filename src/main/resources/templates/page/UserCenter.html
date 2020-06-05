@@ -5,8 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>用户中心</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/swiper.css">
-    <link rel="stylesheet" type="text/css" href="../../static/css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
@@ -20,6 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <style>
         body {
             background: #eee;
@@ -71,6 +70,79 @@
             padding: 40px 15px;
             text-align: center;
         }
+        .title{
+            margin: 10px auto;
+            font-size: 60px;
+            color: #080808;
+            width: 800px;
+            text-align: center;
+        }
+        .title h1{
+            font-size: 60px;
+        }
+        .info-item{
+            margin: 5px 15%;
+            font-size: 45px;
+            text-align: center;
+            line-height: 100px;
+            vertical-align: middle;
+            width: 1000px;
+            height: 100px;
+        }
+        .info-item:hover{
+            margin: 5px 15%;
+            font-size: 50px;
+            text-align: center;
+            line-height: 110px;
+            vertical-align: middle;
+            width: 1000px;
+            height: 110px;
+            border-bottom: 2px solid black;
+        }
+        .info-item span{
+            font-size: 20px;
+        }
+        .left-info{
+            font-size: 45px;
+            float: left;
+            text-align: left;
+            width: 150px;
+            height: 100px;
+            line-height: 100px;
+            vertical-align: middle;
+        }
+        .left-info:hover{
+            font-size: 50px;
+            float: left;
+            text-align: left;
+            width: 200px;
+            height: 110px;
+            line-height: 110px;
+            vertical-align: middle;
+            background-color: cornsilk;
+            border: 2px solid blue;
+        }
+        .right-info{
+            font-size: 45px;
+            float: left;
+            margin-left: 10px;
+            text-align: left;
+            width: 550px;
+            height: 100px;
+            line-height: 100px;
+            vertical-align: middle;
+        }
+        .right-info:hover{
+            font-size: 50px;
+            float: left;
+            text-align: left;
+            width: 580px;
+            height: 110px;
+            line-height: 110px;
+            vertical-align: middle;
+            background-color: cornsilk;
+            border: 2px solid blue;
+        }
 
     </style>
 </head>
@@ -114,37 +186,44 @@
         </ul>
     </div>
 </div>
-<div style="margin: 20%">
-    <div class="starter-template">
-        <h1 th:text="${msg.title}"></h1>
-        <p class="bg-primary" th:text="${msg.content}"></p>
-    </div>
-    <table style="margin: 10% 40%; width: 200px;">
-        <caption>用户信息</caption>
-        <tbody>
-        <tr>
-            <td>Name:</td>
-            <td th:text="${curUse.getName()}"></td>
-        </tr>
-        <tr>
-            <td>StudentID:</td>
-            <td th:text="${curUse.getStudentID()}"></td>
-        </tr>
-        <tr>
-            <td>QQ:</td>
-            <td th:text="${curUse.getQQ()}"></td>
-        </tr>
-        <tr>
-            <td>WeChat:</td>
-            <td th:text="${curUse.getWeChat()}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <div style="margin: 0 auto">
-        <input type="button" class="btn btn-lg btn-primary" onclick="window.location.href='/updateUserInfo'"
-               value="更新信息">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="/updateUserInfo">更新信息</a></li>
+                <li><a href="/sign">注册</a></li>
+                <li><a href="/toChangePWD">修改密码</a></li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-sm-8" style="height: 800px;">
+            <div class="starter-template">
+                <h1 th:text="${msg.title}"></h1>
+                <p class="bg-primary" th:text="${msg.content}"></p>
+            </div>
+            <div class="title">
+                <h1>用户信息</h1>
+            </div>
+            <div class="info-item">
+                <div class="left-info">姓名：</div>
+                <div class="right-info" th:text="${curUse.getName()}"></div>
+            </div>
+            <div class="info-item">
+                <div class="left-info">学号：</div>
+                <div class="right-info" th:text="${curUse.getStudentID()}"></div>
+            </div>
+            <div class="info-item">
+                <div class="left-info">QQ：</div>
+                <div class="right-info" th:text="${curUse.getQQ()}"></div>
+            </div>
+            <div class="info-item">
+                <div class="left-info">微信：</div>
+                <div class="right-info" th:text="${curUse.getWeChat()}"></div>
+            </div>
+        </div>
     </div>
 </div>
+
 <div id="serve">
     <div class="container">
         <ul>
@@ -227,39 +306,16 @@
 </div>
 <div id="footer">
     <div class="container">
-        <p>
-            <span>Campus logo</span>
-            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
+        <p style="color: white;text-align: center;">
+            @2020 御承扬Copyright&copy;2020-05-04
         </p>
     </div>
 </div>
 <a id="btn" href="javascript:;" style='position:fixed;right: 0px; bottom: 25%;font-size: 24px;'>
     <img src="../../static/images/toTop1.png" alt="pic">
 </a>
-<script type="text/javascript" src="../../static/js/swiper.js"></script>
 <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="../../static/js/oppo.js"></script>
-<script type="text/javascript">
-    let swiper = new Swiper('.swiper-container', {
-        pagination: '.swiper-pagination',
-        paginationClickable: true,
-        loop: true,
-        autoplay: 3000,
-
-
-        speed: 1000,
-        prevButton: '.swiper-button-prev',
-        nextButton: '.swiper-button-next',
-        effect: 'fade',//  effect: 'flip',effect: 'coverFlow',slide', 'fade',cube
-        grabCursor: true,
-        cube: {
-            shadow: false,
-            slideShadows: false,
-            shadowOffset: 20,
-            shadowScale: 0.94
-        }
-    });
-</script>
 <script>
     window.onload = function () {
 
