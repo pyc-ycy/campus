@@ -7,12 +7,10 @@
 
 package com.pyc.campus.controller;
 
+import com.pyc.campus.dao.NewsRepository;
 import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.dao.SysUserRepository;
-import com.pyc.campus.domain.Msg;
-import com.pyc.campus.domain.Student;
-import com.pyc.campus.domain.SysRole;
-import com.pyc.campus.domain.SysUser;
+import com.pyc.campus.domain.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,9 +31,10 @@ public class WebController {
     final
     SysUserRepository sysUserRepository;
 
-    public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository) {
+    public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository, NewsRepository newsRepository) {
         this.studentRepository = studentRepository;
         this.sysUserRepository = sysUserRepository;
+        this.newsRepository = newsRepository;
     }
 
     @RequestMapping("/home")
@@ -90,7 +89,7 @@ public class WebController {
         if(key!=0){
             int t = sysUserRepository.updatePassword(password,s.getStudentID());
             if(t>0){
-                return "/page/Oppo";
+                return "page/Index";
             }else {
                 Msg msg = new Msg("提示！","修改密码出错，请重新尝试！！！","");
                 model.addAttribute("msg",msg);
@@ -176,7 +175,7 @@ public class WebController {
 
     @RequestMapping("/")
     public String oppo() {
-        return "page/Oppo";
+        return "page/Index";
     }
 
     @RequestMapping("/login")
@@ -193,4 +192,45 @@ public class WebController {
         return "page/Sign";
     }
 
+    final NewsRepository newsRepository;
+    @RequestMapping("/news")
+    public String news(Model model,HttpSession session)
+    {
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<News> news = newsRepository.findAll();
+        model.addAttribute("news",news);
+        return "page/BrowseNews";
+    }
+    @RequestMapping("/admin")
+    public String admin(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/AdminPage";
+    }
+    @RequestMapping("/publishNews")
+    public String publishNews(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/PublishNews";
+    }
+    @RequestMapping("/saveNews")
+    public String saveNews(Model model, HttpSession session,
+                           @Param("title")String title,
+                           @Param("content")String content){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        long nextId = newsRepository.countAll()+1;
+        News news = new News(nextId,title,content);
+        newsRepository.save(news);
+        return "/page/BrowseNews";
+    }
 }

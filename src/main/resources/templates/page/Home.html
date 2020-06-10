@@ -129,9 +129,9 @@
         <ul class="right">
             <li><a href="#">Home</a></li>
             <li><a href="/learn">学习资源</a></li>
-            <li><a href="#">校内新闻</a></li>
+            <li><a href="/news">校内新闻</a></li>
             <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
         </ul>
     </div>
