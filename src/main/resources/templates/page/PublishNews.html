@@ -78,7 +78,7 @@
 </div>
 <div class="main">
     <h1><span th:text="${curUse.getName()}"></span>您好！ </h1>
-    <form class="form-horizontal" name="newsForm" method="post" action="/saveNews" onsubmit="return checkTitleAndContent(newsForm.title, newsForm.content)">
+    <form class="form-horizontal" name="newsForm" method="post" th:action="@{/saveNews}" action="/saveNews" onsubmit="return checkTitleAndContent(newsForm.title, newsForm.content)">
         <table style="text-align: center;width: 450px;height: 300px;border: 1px;">
             <tr>
                 <td style="text-align: center;height: 40px" colspan="2">

@@ -228,9 +228,17 @@ public class WebController {
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         Student s = studentRepository.findNameByStudentID(currentStudentId);
         model.addAttribute("curUse",s);
-        long nextId = newsRepository.countAll()+1;
+        long i=0;
+        List<News> list = newsRepository.findAll();
+        for(News l:list){
+            if(l != null)
+            {
+                i++;
+            }
+        }
+        long nextId = i+1;
         News news = new News(nextId,title,content);
         newsRepository.save(news);
-        return "/page/BrowseNews";
+        return "/page/PublishNews";
     }
 }
