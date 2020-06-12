@@ -7,6 +7,7 @@
 
 package com.pyc.campus.controller;
 
+import com.pyc.campus.dao.GradeRepository;
 import com.pyc.campus.dao.NewsRepository;
 import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.dao.SysUserRepository;
@@ -31,10 +32,12 @@ public class WebController {
     final
     SysUserRepository sysUserRepository;
 
-    public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository, NewsRepository newsRepository) {
+    public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository,
+                         NewsRepository newsRepository, GradeRepository gradeRepository) {
         this.studentRepository = studentRepository;
         this.sysUserRepository = sysUserRepository;
         this.newsRepository = newsRepository;
+        this.gradeRepository = gradeRepository;
     }
 
     @RequestMapping("/home")
@@ -240,5 +243,26 @@ public class WebController {
         News news = new News(nextId,title,content);
         newsRepository.save(news);
         return "/page/PublishNews";
+    }
+    @RequestMapping("/toQueryGrade")
+    public String toQueryGrade(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Grade> gradeList = gradeRepository.findAllByStudentID(currentStudentId);
+        model.addAttribute("gradeItems", gradeList);
+        return "page/QueryGrade";
+    }
+    final GradeRepository gradeRepository;
+    @RequestMapping("/queryByTerm")
+    public String queryByTerm(Model model, HttpSession session, @Param("term")String term){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Grade> gradeLists = gradeRepository.findAllByTermAndStudentID(term, currentStudentId);
+        model.addAttribute("gradeItems", gradeLists);
+        return "page/QueryGrade";
     }
 }

@@ -18,15 +18,16 @@ public class News {
     private Long id;
     private String title;
     private String content;
-    public News()
-    {
+
+    public News() {
         super();
     }
-    public News(Long id,String title, String content){
+
+    public News(Long id, String title, String content) {
         super();
-        this.id=id;
-        this.title=title;
-        this.content=content;
+        this.id = id;
+        this.title = title;
+        this.content = content;
     }
 
     public void setTitle(String title) {
