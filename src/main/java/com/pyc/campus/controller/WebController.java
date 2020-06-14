@@ -7,19 +7,23 @@
 
 package com.pyc.campus.controller;
 
+import com.pyc.campus.config.MailConfig;
 import com.pyc.campus.dao.GradeRepository;
 import com.pyc.campus.dao.NewsRepository;
 import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.dao.SysUserRepository;
 import com.pyc.campus.domain.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.pyc.campus.config.MailConfig;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -275,7 +279,7 @@ public class WebController {
         model.addAttribute("msg", msg);
         return "page/ImportGrade";
     }
-    @RequestMapping("saveGrade")
+    @RequestMapping("/saveGrade")
     public String saveGrade(Model model, HttpSession session,
                             @Param("term")String term,@Param("CourseCode")String courseCode,
                           @Param("CourseName")String courseName, @Param("credit")int credit,
@@ -305,5 +309,44 @@ public class WebController {
         Msg msg = new Msg("提示","导入成功","");
         model.addAttribute("msg",msg);
         return "page/ImportGrade";
+    }
+    @RequestMapping("/toUpQuestion")
+    public String toUpQuestion(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        Msg msg = new Msg("","","");
+        model.addAttribute("msg", msg);
+        return "page/UpQuestion";
+    }
+
+    @RequestMapping("/upQuestion")
+    public String upQuestion(Model model, HttpSession session,
+                             @Param("mail")String mail, @Param("name")String name,
+                             @Param("title")String title, @Param("content")String content,@Param("reward")String reward){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        try{
+            MailConfig mailConfig = new MailConfig();
+            JavaMailSender sender = mailConfig.getMailSender();
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom("15014366986@163.com");
+            mailMessage.setTo("2923616405@qq.com");
+            mailMessage.setSubject("问题悬赏申请");
+            String text = "发布者："+name+"，发布者邮箱："+mail+",问题标题："+title+",问题内容："+content+",悬赏："+reward;
+            mailMessage.setText(text);
+            sender.send(mailMessage);
+            Msg msg = new Msg("提示","申请成功，请等待管理员审核通过","");
+            model.addAttribute("msg",msg);
+            return "page/UpQuestion";
+        }catch (Exception e){
+            Msg msg = new Msg("提示","发生错误，请重新尝试，谢谢","");
+            model.addAttribute("msg",msg);
+            System.out.println(e.getMessage());
+            return "page/UpQuestion";
+        }
     }
 }

@@ -4,7 +4,7 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户中心</title>
+    <title>问题悬赏申请</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
@@ -21,19 +21,27 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <style>
         body {
-            background: #eee;
             font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
             font-size: 14px;
             color: #000;
             margin: 0;
             padding: 0;
+            background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
         }
-        .user-info{
+        .main{
             margin: 10px auto;
             width: 800px;
             height: auto;
         }
-
+        .form-box{
+            margin: 100px auto;
+            width: 500px;
+            height: auto;
+        }
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -68,71 +76,60 @@
             <li><a href="/home">Home</a></li>
             <li><a href="/learn">学习资源</a></li>
             <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
         </ul>
     </div>
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-4">
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">信息查看</a> </li>
-                <li><a href="/updateUserInfo">更新信息</a></li>
-                <li><a href="/sign">注册</a></li>
-                <li><a href="/toChangePWD">修改密码</a></li>
-                <li><a href="/toQueryGrade">查看课程成绩</a> </li>
-                <li><a href="/toUpQuestion">申请问题悬赏</a> </li>
-            </ul>
-            <hr class="hidden-sm hidden-md hidden-lg">
-        </div>
-        <div class="col-sm-8" style="height: 800px;">
-            <div class="starter-template">
-                <h1 th:text="${msg.title}"></h1>
-                <p class="bg-primary" th:text="${msg.content}"></p>
+<div class="main">
+    <h1>成绩导入</h1>
+    <div class="starter-template">
+        <h1 th:text="${msg.title}"></h1>
+        <p class="bg-primary" th:text="${msg.content}"></p>
+    </div>
+    <div class="form-box">
+        <form class="form-horizontal" method="post" th:action="@{/upQuestion}" action="/upQuestion" name="form">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" name="mail" id="inputEmail3" placeholder="Your Email">
+                </div>
             </div>
-           <div class="user-info" th:if="${not #lists.isEmpty(curUse)}">
-               <div class="panel panel-primary">
-                   <div class="panel-heading">
-                       <h3 class="panel-title">用户信息</h3>
-                   </div>
-                   <div class="panel-body">
-                       <ul class="list-group">
-                           <li class="list-group-item-heading">
-                               姓名：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getName()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">
-                               学号：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getStudentID()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">
-                               QQ：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getQQ()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">
-                               微信：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getWeChat()}"></span>
-                           </li>
-                       </ul>
-                   </div>
-               </div>
-           </div>
-        </div>
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="name" id="inputName" placeholder="Your Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputTitle" class="col-sm-2 control-label">问题标题</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="title" id="inputTitle" placeholder="Title Of Your Question">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputContent" class="col-sm-2 control-label">问题描述</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" name="content" id="inputContent" rows="3" placeholder="请描述你的问题，一百字以内"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputReward" class="col-sm-2 control-label">悬赏</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="reward" id="inputReward" placeholder="Reward Of Your Question">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">提交</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
 <div id="serve">
     <div class="container">
         <ul>

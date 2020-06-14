@@ -81,6 +81,16 @@
     </div>
 </div>
 <div class="main">
+    <br>
+    <form class="form-inline" name="form"  method="post" th:action="@{/queryByTerm}">
+        <div class="form-group">
+            <label for="term" class="sr-only">学年学期</label>
+            <div class="input-group">
+                <input type="text" name="term" id="term" placeholder="起始年-结束年-学期">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">查询</button>
+    </form>
     <div class="table-box">
         <table class="table table-striped">
             <thead>
@@ -111,18 +121,6 @@
             </tbody>
         </table>
     </div>
-    <br>
-    <form class="form-horizontal" name="form"  method="post" th:action="@{/queryByTerm}">
-        <div class="input-group input-group-lg">
-            <span class="input-group-addon" id="sizing-addon1">学年学期</span>
-            <input type="text" name="term" class="form-control" placeholder="起始年-结束年-学期" aria-describedby="sizing-addon1">
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <input type="submit" value="查询" class="btn btn-lg btn-primary"/>
-            </div>
-        </div>
-    </form>
 </div>
 <div id="serve">
     <div class="container">
