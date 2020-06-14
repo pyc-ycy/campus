@@ -4,7 +4,7 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>悬赏问题发布</title>
+    <title>悬赏问题浏览</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
@@ -33,14 +33,10 @@
             width: 800px;
             height: 700px;
         }
-        .form-box{
-            margin: 100px auto;
-            width: 500px;
+        .questions-list{
+            margin: 10px auto;
+            width: 800px;
             height: auto;
-        }
-        .starter-template {
-            padding: 40px 15px;
-            text-align: center;
         }
     </style>
 </head>
@@ -85,51 +81,39 @@
     </div>
 </div>
 <div class="main">
-    <h1>悬赏问题发布</h1>
-    <div class="starter-template">
-        <h1 th:text="${msg.title}"></h1>
-        <p class="bg-primary" th:text="${msg.content}"></p>
+    <h1>悬赏问题浏览</h1>
+    <p>如果你知道这个问题，请按发布者的邮箱联系发布者</p>
+    <form class="form-inline" name="form"  method="post" th:action="@{/queryByQuestionType}">
+        <div class="form-group">
+            <label for="TypeOfQuestion" class="sr-only">问题类型</label>
+            <div class="input-group">
+                <input type="text" name="TypeOfQuestion" id="TypeOfQuestion" placeholder="问题类型">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">搜索</button>
+    </form>
+    <div class="table-box">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>发布者</th>
+                <th>邮箱</th>
+                <th>问题类型</th>
+                <th>问题内容</th>
+                <th>悬赏</th>
+            </tr>
+            </thead>
+            <tbody th:if="${not #lists.isEmpty(questions)}">
+            <tr th:each="question:${questions}">
+                <td th:text="${question.getPublisher()}"></td>
+                <td th:text="${question.mail}"></td>
+                <td th:text="${question.type}"></td>
+                <td th:text="${question.content}"></td>
+                <td th:text="${question.reward}"></td>
+            </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="form-box">
-        <form class="form-horizontal" method="post" th:action="@{/publishQuestion}" action="/publishQuestion" name="form">
-            <div class="form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control" name="mail" id="inputEmail3" placeholder="Your Email">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">姓名</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="PublisherName" id="inputName" placeholder="Your Name">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputTitle" class="col-sm-2 control-label">问题类型</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="QuestionType" id="inputTitle" placeholder="Title Of Your Question">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputContent" class="col-sm-2 control-label">问题描述</label>
-                <div class="col-sm-10">
-                    <textarea class="form-control" name="content" id="inputContent" rows="3" placeholder="请描述你的问题，一百字以内"></textarea>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputReward" class="col-sm-2 control-label">悬赏</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="reward" id="inputReward" placeholder="Reward Of Your Question">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">发布</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
 </div>
 <div id="serve">
     <div class="container">

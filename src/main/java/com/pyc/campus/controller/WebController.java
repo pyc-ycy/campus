@@ -8,22 +8,18 @@
 package com.pyc.campus.controller;
 
 import com.pyc.campus.config.MailConfig;
-import com.pyc.campus.dao.GradeRepository;
-import com.pyc.campus.dao.NewsRepository;
-import com.pyc.campus.dao.StudentRepository;
-import com.pyc.campus.dao.SysUserRepository;
+import com.pyc.campus.dao.*;
 import com.pyc.campus.domain.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.pyc.campus.config.MailConfig;
+
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +33,12 @@ public class WebController {
     SysUserRepository sysUserRepository;
 
     public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository,
-                         NewsRepository newsRepository, GradeRepository gradeRepository) {
+                         NewsRepository newsRepository, GradeRepository gradeRepository, QuestionRepository questionRepository) {
         this.studentRepository = studentRepository;
         this.sysUserRepository = sysUserRepository;
         this.newsRepository = newsRepository;
         this.gradeRepository = gradeRepository;
+        this.questionRepository = questionRepository;
     }
 
     @RequestMapping("/home")
@@ -355,6 +352,58 @@ public class WebController {
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         Student s = studentRepository.findNameByStudentID(currentStudentId);
         model.addAttribute("curUse",s);
-        return "/page/PublishQuestion";
+        Msg msg = new Msg("", "", "");
+        model.addAttribute("msg", msg);
+        return "page/PublishQuestion";
+    }
+    @RequestMapping("/publishQuestion")
+    public String publishQuestion(Model model, HttpSession session,
+                                  @Param("mail")String mail,
+                                  @RequestParam(value = "PublisherName", required = false)String publisher,
+                                  @RequestParam(value = "QuestionType", required = false)String type, @Param("content")String content, @Param("reward")String reward){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        try{
+            Question question = new Question();
+            question.setPublisher(publisher);
+            question.setMail(mail);
+            question.setType(type);
+            question.setContent(content);
+            question.setReward(reward);
+            questionRepository.save(question);
+            Msg msg = new Msg("提示", "发布成功！","");
+            model.addAttribute("msg",msg);
+            return "page/PublishQuestion";
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            Msg msg = new Msg("提示","发生了一些错误，请重新尝试！","");
+            model.addAttribute("msg",msg);
+            return "page/PublishQuestion";
+        }
+
+    }
+    final QuestionRepository questionRepository;
+    @RequestMapping("/toBrowserQuestion")
+    public String toBrowserQuestion(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Question> questions = questionRepository.findAll();
+        model.addAttribute("questions", questions);
+        return "page/BrowserQuestion";
+    }
+    @RequestMapping("/queryByQuestionType")
+    public String queryByQuestionType(Model model, HttpSession session,
+                                      @RequestParam(value = "TypeOfQuestion", required = false)String type){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Question> questions = questionRepository.findAllByType(type);
+        model.addAttribute("questions", questions);
+        return "page/BrowserQuestion";
     }
 }
