@@ -4,7 +4,7 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>网站管理</title>
+    <title>成绩导入</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
@@ -21,21 +21,26 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <style>
         body {
-            background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
             font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
             font-size: 14px;
             color: #000;
             margin: 0;
             padding: 0;
+            background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
         }
         .main{
             margin: 10px auto;
             width: 800px;
             height: auto;
         }
-        .item-box{
-            width: 100px;
-            height: 50px;
+        .form-box{
+            margin: 100px auto;
+            width: 500px;
+            height: auto;
+        }
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
         }
     </style>
 </head>
@@ -73,30 +78,80 @@
             <li><a href="/news">校内新闻</a></li>
             <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
         </ul>
     </div>
 </div>
 <div class="main">
-    <h1><span th:text="${curUse.getName()}"></span>您好！ </h1>
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                网站管理菜单
-            </h3>
-            <div class="panel-body">
-                <div class="list-group">
-                    <div class="item-box list-group-item">
-                        <a href="/publishNews">新闻发布</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/toImportGrade">成绩导入</a>
-                    </div>
+    <h1>成绩导入</h1>
+    <div class="starter-template">
+        <h1 th:text="${msg.title}"></h1>
+        <p class="bg-primary" th:text="${msg.content}"></p>
+    </div>
+    <div class="form-box">
+        <form class="form-horizontal" method="post" th:action="@{saveGrade}" action="/saveGrade" name="form">
+            <div class="form-group">
+                <label for="inputTerm" class="col-sm-2 control-label">学年学期</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputTerm" name="term" placeholder="2020-2021-1">
                 </div>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="inputCourseCode" class="col-sm-2 control-label">课程编号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputCourseCode" name="courseCode" placeholder="123456">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputCourseName" class="col-sm-2 control-label">课程名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputCourseName" name="courseName" placeholder="课程名称">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputCredit" class="col-sm-2 control-label">课程学分</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputCredit" name="credit" placeholder="学分">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputGPA" class="col-sm-2 control-label">成绩绩点</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputGPA" name="GPA" placeholder="绩点">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputLearnHour" class="col-sm-2 control-label">课程学时</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputLearnHour" name="LearnHour" placeholder="学时">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputGrade" class="col-sm-2 control-label">学生成绩</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputGrade" name="StudentGrade" placeholder="成绩">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">学生姓名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputName" name="studentName" placeholder="学生姓名">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputStudentID" class="col-sm-2 control-label">学生学号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputStudentID" name="studentID" placeholder="11位学号">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">保存</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <div id="serve">

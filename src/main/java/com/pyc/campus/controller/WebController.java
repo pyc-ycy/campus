@@ -265,4 +265,45 @@ public class WebController {
         model.addAttribute("gradeItems", gradeLists);
         return "page/QueryGrade";
     }
+    @RequestMapping("/toImportGrade")
+    public String toImportGrade(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        Msg msg = new Msg("","","");
+        model.addAttribute("msg", msg);
+        return "page/ImportGrade";
+    }
+    @RequestMapping("saveGrade")
+    public String saveGrade(Model model, HttpSession session,
+                            @Param("term")String term,@Param("CourseCode")String courseCode,
+                          @Param("CourseName")String courseName, @Param("credit")int credit,
+                          @Param("GPA")String GPA, @Param("LearnHour")String LearnHour,
+                            @RequestParam(value = "StudentGrade", required = false)String studentGrade,
+                            @RequestParam(value = "studentName", required = false)String name, @Param("studentID")String studentID)
+    {
+        System.out.println(name);
+        float gpa = Float.parseFloat(GPA);
+        int learnHour = Integer.parseInt(LearnHour);
+        int grade = Integer.parseInt(studentGrade);
+        Grade g = new Grade();
+        g.setTerm(term);
+        g.setCourseCode(courseCode);
+        g.setCourseName(courseName);
+        g.setCredit(credit);
+        g.setGpa(gpa);
+        g.setLearnHour(learnHour);
+        g.setGrade(grade);
+        g.setName(name);
+        g.setStudentID(studentID);
+        gradeRepository.save(g);
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        Msg msg = new Msg("提示","导入成功","");
+        model.addAttribute("msg",msg);
+        return "page/ImportGrade";
+    }
 }
