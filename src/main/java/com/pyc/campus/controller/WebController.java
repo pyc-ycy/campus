@@ -349,4 +349,12 @@ public class WebController {
             return "page/UpQuestion";
         }
     }
+    @RequestMapping("/toPublishQuestion")
+    public String toPublishQuestion(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "/page/PublishQuestion";
+    }
 }
