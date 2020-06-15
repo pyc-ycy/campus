@@ -8,4 +8,14 @@
 package com.pyc.campus.domain;
 
 public class PublishMessage {
+    private String content;
+    private String name;
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

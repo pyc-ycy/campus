@@ -24,5 +24,6 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 //        registry.addViewController("/login").setViewName("page/Login");
 //        registry.addViewController("/home").setViewName("page/Home");
         registry.addViewController("/aboutLearn").setViewName("page/AboutLearn");
+        registry.addViewController("/publicChatRoom").setViewName("PublicChatRoom");
     }
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>公共聊天室</title>
+    <style>
+        body {
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            background: #eee url("../static/images/campus/logo.jpg") center no-repeat fixed;
+        }
+        .main{
+            margin: 10px auto;
+            width: 800px;
+            height: 700px;
+        }
+    </style>
+</head>
+<body onload="disconnect()">
+<noscript><h2 style="color: red">貌似您的浏览器不支持WebSocket</h2> </noscript>
+<div class="main">
+    <div>
+        <div>
+            <button id="connect" onclick="connect();">连接</button>
+            <button id="disconnect" disabled="disabled" onclick="disconnect();">断开连接</button>
+        </div>
+        <div id="conversationDiv">
+            <label for="name">输入名字：</label><input type="text" id="name" />
+            <label for="content">输入消息：</label><input type="text" id="content">
+            <button id="sendName" onclick="sendName();">发送</button>
+            <br><h1>聊天记录框</h1>
+            <div id="response" style="width: 500px;min-height:600px;height: auto;font-size: 26px;border: 1px solid black;"></div>
+        </div>
+    </div>
+</div>
+<script src="js/sockjs.min.js"></script>
+<script src="js/stomp.min.js"></script>
+<script src="js/jquery.js"></script>
+<script type="text/javascript">
+    var stompClient = null;
+
+    function setConnected(connected) {
+        document.getElementById('connect').disabled = connected;
+        document.getElementById('disconnect').disabled = !connected;
+        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
+        $('#response').html();
+    }
+
+    function connect() {
+        var socket = new SockJS('/endpointPublicChat'); //1
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/publicChat/getResponse', function(response){ //2
+                showResponse(JSON.parse(response.body).responseMessageContent);
+            });
+        });
+    }
+
+
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function sendName() {
+        var name = $('#name').val();
+        var content = $('#content').val();
+        //3
+        stompClient.send("/publicChatRoom", {}, JSON.stringify({ 'name': name,'content':content }));
+    }
+
+    function showResponse(message) {
+        // var response = $("#response");
+        // response.html(message+"<br>");
+        var div = document.getElementById("response");
+        var  p = document.createElement("p");
+        p.innerHTML=message;
+        div.append(p);
+    }
+</script>
+</body>
