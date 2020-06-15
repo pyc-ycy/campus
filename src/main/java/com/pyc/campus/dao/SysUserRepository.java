@@ -19,4 +19,8 @@ public interface SysUserRepository extends JpaRepository<SysUser,Long> {
     @Transactional
     @Query("update SysUser s set s.password=?1 where s.username=?2")
     int updatePassword(String password, String username);
+    @Modifying
+    @Transactional
+    @Query("delete from SysUser where username=?1")
+    void delByUsername(String username);
 }

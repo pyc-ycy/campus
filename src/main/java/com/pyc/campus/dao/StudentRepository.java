@@ -13,8 +13,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface StudentRepository extends JpaRepository<Student,Long> {
-    Student findByNameAndStudentID(String name,String studentID);
     Student findPasswordByStudentID(String studentID);
     Student findNameByStudentID(String studentID);
     @Modifying
@@ -25,4 +26,13 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Transactional
     @Query("update Student s set s.password=?1 where s.studentID=?2")
     int saveChangePWD(String password, String studentID);
+    // 根据Student ID前缀查询
+    @Modifying
+    @Transactional
+    @Query("select s from Student s where s.studentID like ?1")
+    List<Student> query01(String classPrefix);
+    @Modifying
+    @Transactional
+    @Query("delete from Student  where studentID=?1")
+    void delByStudentID(String studentId);
 }

@@ -159,7 +159,7 @@ public class WebController {
             return "page/SignError";
         }
         Msg msg = new Msg("注册结果","恭喜"+studentID+",你成功注册，请使用刚刚注册的学号和密码进行登录","额外信息");
-        Student s = new Student(username, studentID, password, weChat, qq);
+        Student s = new Student(username, studentID, password, weChat, qq,0);
         studentRepository.save(s);
         int rs = (int) sysUserRepository.count();
         SysUser user = new SysUser();
@@ -405,5 +405,38 @@ public class WebController {
         List<Question> questions = questionRepository.findAllByType(type);
         model.addAttribute("questions", questions);
         return "page/BrowserQuestion";
+    }
+    @RequestMapping("/manageUser")
+    public String findUserExceptCurUser(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Student> students = studentRepository.findAll();
+        model.addAttribute("students", students);
+        return "page/ManageUser";
+    }
+    @RequestMapping("/findUserByStudentIDLike")
+    public String findUserByStudentIDLike(Model model, HttpSession session,
+                                           @RequestParam(value = "ClassPrefix", required = false)String classPrefix){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Student> students = studentRepository.query01(classPrefix+'%');
+        model.addAttribute("students", students);
+        return "page/ManageUser";
+    }
+    @RequestMapping("/delStuByStuId")
+    public String delStuByStuId(Model model,HttpSession session,@RequestParam(value = "studentId", required = false)String stuId){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        studentRepository.delByStudentID(stuId);
+        sysUserRepository.delByUsername(stuId);
+        List<Student> students = studentRepository.findAll();
+        model.addAttribute("students", students);
+        return "page/ManageUser";
     }
 }

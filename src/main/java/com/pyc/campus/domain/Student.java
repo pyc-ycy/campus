@@ -21,17 +21,28 @@ public class Student {
     private String password;
     private String weChat;
     private String QQ;
+    private int admin;
+
     public Student() {
         super();
     }
-    public Student(String name,String studentID, String password,String weChat,String QQ)
-    {
+
+    public Student(String name, String studentID, String password, String weChat, String QQ, int admin) {
         super();
-        this.name=name;
-        this.studentID=studentID;
+        this.name = name;
+        this.studentID = studentID;
         this.password = password;
         this.weChat = weChat;
         this.QQ = QQ;
+        this.admin = admin;
+    }
+
+    public void setAdmin(int admin) {
+        this.admin = admin;
+    }
+
+    public int getAdmin() {
+        return admin;
     }
 
     public void setId(Long id) {
