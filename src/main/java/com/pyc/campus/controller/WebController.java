@@ -176,8 +176,8 @@ public class WebController {
         model.addAttribute("msg", msg);
         return "page/Login";
     }
-
-    @RequestMapping("/")
+//@RequestMapping("/")
+    @RequestMapping("/campus-0.0.1-SNAPSHOT")
     public String oppo() {
         return "page/Index";
     }
