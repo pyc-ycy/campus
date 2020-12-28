@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>添加好友</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/oppo.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <style>
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .user-info {
+            margin: 10px auto;
+            width: 800px;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+<!--页面顶部-->
+<div id="top">
+    <div class="container"></div>
+</div>
+<!-- 页面的头部 -->
+<div id="header">
+    <div class="container">
+        <div class="header_left left">
+            <div class="xlwb"></div>
+            <div class="txwb"></div>
+            <div class="tel">150-1436-6986</div>
+        </div>
+        <ul class="right">
+            <li>
+                <form th:action="@{/logout}" method="post">
+                    <input type="submit" class="btn btn-link" th:value="安全退出">
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- 页面的导航 -->
+<div id="nav">
+    <div class="container">
+        <div class="logo left">
+            <h1>Campus</h1>
+        </div>
+        <ul class="right">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/learn">学习资源</a></li>
+            <li><a href="/news">校内新闻</a></li>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#">信息查看</a></li>
+                <li><a href="/updateUserInfo">更新信息</a></li>
+                <li><a href="/sign">注册</a></li>
+                <li><a href="/toChangePWD">修改密码</a></li>
+                <li><a href="/toQueryGrade">查看课程成绩</a></li>
+                <li><a href="/toUpQuestion">申请问题悬赏</a></li>
+                <li><a href="/toBrowserQuestion">浏览悬赏问题</a></li>
+                <li><a href="/publicChatRoom">公共聊天室</a></li>
+                <li><a href="/toAddFriend">添加好友</a></li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-sm-8" style="height: 800px;">
+            <div class="starter-template">
+                <h1 th:text="${msg.title}"></h1>
+                <p class="bg-primary" th:text="${msg.content}"></p>
+            </div>
+            <div class="user-info">
+                <form class="form-horizontal" method="post" th:action="@{/addFriend}" action="/addFriend">
+                    <div class="form-group">
+                        <label for="fromName" class="col-sm-2 control-label">你的学号：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="fromName" id="fromName" placeholder="学号示例：201724073161">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="toName" class="col-sm-2 control-label">对方的学号</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="toName" id="toName" placeholder="学号示例：201724073161">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">添加</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="serve">
+    <div class="container">
+        <ul>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+            <li>
+                <dl>
+                    <dt></dt>
+                    <dd class="dd1">正规网站</dd>
+                    <dd class="dd2">所有的服务都是合法的</dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="after_sale">
+    <div class="container">
+        <ul>
+            <li>
+                <ol>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">15014366986</a></li>
+                    <li><a href="#">2923616405</a></li>
+                    <li><a href="#">pyc852164</a></li>
+                </ol>
+            </li>
+            <li>
+                <ol>
+                    <li><a href="#">关于我</a></li>
+                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
+                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
+                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
+                </ol>
+            </li>
+            <li>
+                <ol>
+                    <li>关于我</li>
+                    <li>我的博客文章，</li>
+                    <li>我的代码托管平台，</li>
+                    <li>也是代码托管平台，</li>
+                </ol>
+            </li>
+            <li>
+                <ol>
+                    <li>关于我</li>
+                    <li>可以了解我的所学</li>
+                    <li>可以看到我的开源代码</li>
+                    <li>为避免Github访问不了</li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+</div>
+<div id="footer">
+    <div class="container">
+        <p style="color: white;text-align: center;">
+            @2020 御承扬Copyright&copy;2020-05-04
+        </p>
+    </div>
+</div>
+<a id="btn" href="javascript:;" style='position:fixed;right: 0px; bottom: 25%;font-size: 24px;'>
+    <img src="../static/images/toTop1.png" alt="pic">
+</a>
+<script type="text/javascript" src="../static/js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="../static/js/oppo.js"></script>
+<script>
+    window.onload = function () {
+
+        let tp = document.getElementById("btn");
+        tp.style.display = "none";
+        let timer = null;
+        tp.onclick = function () {
+            timer = setInterval(function () {
+                let backTop = document.documentElement.scrollTop || document.body.scrollTop;
+                // 越滚月慢
+                let speedTop = backTop / 5;
+                document.documentElement.scrollTop -= backTop - speedTop;
+                if (backTop === 0) {
+                    clearInterval(timer);
+                }
+            }, 30);
+        }
+        let pageHeight = 700;
+        let nav = document.getElementById("nav");
+        let navTop = nav.offsetTop;
+        window.onscroll = function () {
+            let backTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (backTop > pageHeight) {
+                tp.style.display = "block";
+            } else {
+                tp.style.display = "none";
+            }
+            if (backTop >= navTop) {
+                nav.style.position = "fixed";
+                nav.style.top = "0";
+                nav.style.left = "0";
+                nav.style.zIndex = "100";
+            } else {
+                nav.style.position = "";
+            }
+        }
+    }
+
+</script>
+</body>
+</html>
