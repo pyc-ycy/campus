@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,14 +32,17 @@ public class WebController {
     StudentRepository studentRepository;
     final
     SysUserRepository sysUserRepository;
-
+    final FriendListRepository friendListRepository;
     public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository,
-                         NewsRepository newsRepository, GradeRepository gradeRepository, QuestionRepository questionRepository) {
+                         NewsRepository newsRepository, GradeRepository gradeRepository,
+                         QuestionRepository questionRepository,
+                         FriendListRepository friendListRepository) {
         this.studentRepository = studentRepository;
         this.sysUserRepository = sysUserRepository;
         this.newsRepository = newsRepository;
         this.gradeRepository = gradeRepository;
         this.questionRepository = questionRepository;
+        this.friendListRepository=friendListRepository;
     }
 
     @RequestMapping("/home")
@@ -72,6 +76,39 @@ public class WebController {
         model.addAttribute("msg",msg);
         model.addAttribute("curUse",s);
         return "page/UserCenter";
+    }
+    @RequestMapping("toAddFriend")
+    public String toAddFriend(Model model, HttpSession session)
+    {
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        Msg msg = new Msg("注意","添加好友时请输入对方的学号，而不是姓名！","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        return "page/AddFriend";
+    }
+    @RequestMapping("/addFriend")
+    public String addFriend(Model model, HttpSession session,
+                            @Param("fromName")String fromName,
+                            @Param("toName")String toName){
+        Student stu = studentRepository.findNameByStudentID(toName);
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        if(stu==null)
+        {
+            Msg msg = new Msg("错误","你所添加的用户不存在,请检查输入是否错误","");
+            model.addAttribute("msg",msg);
+            model.addAttribute("curUse",s);
+            return "page/AddFriend";
+        }
+        FriendList fl = new FriendList(fromName,toName);
+        friendListRepository.save(fl);
+        Msg msg = new Msg("OK","请耐心等待对方通过申请","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        return "page/AddFriend";
     }
     @RequestMapping("/toChangePWD")
     public String toChangePWD(Model model,HttpSession session){
@@ -177,7 +214,7 @@ public class WebController {
         return "page/Login";
     }
 //@RequestMapping("/")
-    @RequestMapping("/campus-0.0.1-SNAPSHOT")
+    @RequestMapping("/campus")
     public String oppo() {
         return "page/Index";
     }
@@ -265,6 +302,10 @@ public class WebController {
         List<Grade> gradeLists = gradeRepository.findAllByTermAndStudentID(term, currentStudentId);
         model.addAttribute("gradeItems", gradeLists);
         return "page/QueryGrade";
+    }
+    @RequestMapping("/test")
+    public List<Grade> test(@Param("stuId")String studentId) {
+        return gradeRepository.findAllByStudentID(studentId);
     }
     @RequestMapping("/toImportGrade")
     public String toImportGrade(Model model, HttpSession session){

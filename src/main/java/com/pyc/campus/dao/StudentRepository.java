@@ -18,6 +18,7 @@ import java.util.List;
 public interface StudentRepository extends JpaRepository<Student,Long> {
     Student findPasswordByStudentID(String studentID);
     Student findNameByStudentID(String studentID);
+    Student findAllByStudentID(String studentID);
     @Modifying
     @Transactional
     @Query("update Student s set s.name=?1,s.weChat=?2, s.QQ=?3 where s.studentID=?4")
