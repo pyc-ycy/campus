@@ -88,11 +88,38 @@ public class WebController {
         model.addAttribute("curUse",s);
         return "page/AddFriend";
     }
+    @RequestMapping("/toMyFriend")
+    public String toMyFriend(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        List<FriendList> tempFl = friendListRepository.toNameIsFalseByFromName(currentStudentId);
+        List<FriendList> Fl = friendListRepository.findMyFriendsByFromName(currentStudentId);
+        List<FriendList> Fl1 = friendListRepository.findMyFriendsByToName(currentStudentId);
+        model.addAttribute("curUse",s);
+        model.addAttribute("tempFl",tempFl);
+        model.addAttribute("Fl",Fl);
+        model.addAttribute("Fl1",Fl1);
+        return "page/MyFriend";
+    }
+    @RequestMapping("/saveOnlineStatus")
+    public String saveOnlineStatus(Model model, HttpSession session,
+                                   @Param("onlineStatus")Boolean onlineStatus)
+    {
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        friendListRepository.setOnlineStatus(onlineStatus,currentStudentId);
+        Msg msg = new Msg("","","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        return "page/UserCenter";
+    }
     @RequestMapping("/addFriend")
     public String addFriend(Model model, HttpSession session,
                             @Param("fromName")String fromName,
                             @Param("toName")String toName){
-        Student stu = studentRepository.findNameByStudentID(toName);
+        Student stu = studentRepository.findAllByStudentID(toName);
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         Student s = studentRepository.findNameByStudentID(currentStudentId);

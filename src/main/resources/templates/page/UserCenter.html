@@ -19,6 +19,30 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var speed = 800;//滚动速度
+            var h=document.body.clientHeight;
+            //回到顶部
+            $("#toTop").click(function () {
+
+                $('html,body').animate({
+
+                        scrollTop: '0px'
+                    },
+                    speed);
+            });
+            //回到底部
+            var windowHeight = parseInt($("body").css("height"));//整个页面的高度
+            $("#toBottom").click(function () {
+                //alert(h);
+                $('html,body').animate({
+                        scrollTop: h+'px'
+                    },
+                    speed);
+            });
+        });
+    </script>
     <style>
         body {
             background: #eee;
@@ -33,7 +57,12 @@
             width: 100%;
             height: auto;
         }
-
+        #scroll {
+            position:fixed; top:300px; right:100px;
+        }
+        .scrollItem {
+            width:20px; height:70px;border:#e1e1e1 1px solid; cursor:pointer; text-align:center; padding-top:10px;
+        }
     </style>
 </head>
 <body>
@@ -89,6 +118,7 @@
                 <li><a href="/toBrowserQuestion">浏览悬赏问题</a> </li>
                 <li><a href="/publicChatRoom">公共聊天室</a> </li>
                 <li><a href="/toAddFriend">添加好友</a> </li>
+                <li><a href="/toMyFriend">我的好友</a> </li>
             </ul>
             <hr class="hidden-sm hidden-md hidden-lg">
         </div>
@@ -127,6 +157,15 @@
                            </li>
                            <li class="list-group-item-text">
                                <span th:text="${curUse.getWeChat()}"></span>
+                           </li>
+                           <li class="list-group-item-heading">设置在线状态：</li>
+                           <li class="list-group-item-text">
+                               <button class="btn btn-primary" onclick="window.location.href='/saveOnlineStatus?onlineStatus=1'">
+                                   在线
+                               </button>
+                               <button class="btn btn-primary" onclick="window.location.href='/saveOnlineStatus?onlineStatus=0'">
+                                   隐身
+                               </button>
                            </li>
                        </ul>
                    </div>
@@ -180,9 +219,10 @@
         </p>
     </div>
 </div>
-<a id="btn" href="javascript:;" style='position:fixed;right: 0px; bottom: 25%;font-size: 24px;'>
-    <img src="../../static/images/toTop1.png" alt="pic">
-</a>
+<div id="scroll">
+    <div class="scrollItem" id="toTop">顶部</div>
+    <div class="scrollItem" id="toBottom">底部</div>
+</div>
 <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="../../static/js/oppo.js"></script>
 <script>
@@ -205,22 +245,6 @@
         let pageHeight = 700;
         let nav = document.getElementById("nav");
         let navTop = nav.offsetTop;
-        window.onscroll = function () {
-            let backTop = document.documentElement.scrollTop || document.body.scrollTop;
-            if (backTop > pageHeight) {
-                tp.style.display = "block";
-            } else {
-                tp.style.display = "none";
-            }
-            if (backTop >= navTop) {
-                nav.style.position = "fixed";
-                nav.style.top = "0";
-                nav.style.left = "0";
-                nav.style.zIndex = "100";
-            } else {
-                nav.style.position = "";
-            }
-        }
     }
 
 </script>

@@ -19,7 +19,37 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var speed = 800;//滚动速度
+            var h=document.body.clientHeight;
+            //回到顶部
+            $("#toTop").click(function () {
+
+                $('html,body').animate({
+
+                        scrollTop: '0px'
+                    },
+                    speed);
+            });
+            //回到底部
+            var windowHeight = parseInt($("body").css("height"));//整个页面的高度
+            $("#toBottom").click(function () {
+                //alert(h);
+                $('html,body').animate({
+                        scrollTop: h+'px'
+                    },
+                    speed);
+            });
+        });
+    </script>
     <style>
+        #scroll {
+            position:fixed; top:300px; right:100px;
+        }
+        .scrollItem {
+            width:20px; height:70px;border:#e1e1e1 1px solid; cursor:pointer; text-align:center; padding-top:10px;
+        }
         body {
             font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
             font-size: 14px;
@@ -170,6 +200,10 @@
         </ul>
     </div>
 </div>
+<div id="scroll">
+    <div class="scrollItem" id="toTop">顶部</div>
+    <div class="scrollItem" id="toBottom">底部</div>
+</div>
 <div id="footer">
     <div class="container">
         <p style="color: white;text-align: center;">
@@ -177,49 +211,9 @@
         </p>
     </div>
 </div>
-<a id="btn" href="javascript:;" style='position:fixed;right: 0px; bottom: 25%;font-size: 24px;'>
-    <img src="../../static/images/toTop1.png" alt="pic">
-</a>
+
 <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="../../static/js/oppo.js"></script>
-<script>
-    window.onload = function () {
 
-        let tp = document.getElementById("btn");
-        tp.style.display = "none";
-        let timer = null;
-        tp.onclick = function () {
-            timer = setInterval(function () {
-                let backTop = document.documentElement.scrollTop || document.body.scrollTop;
-                // 越滚月慢
-                let speedTop = backTop / 5;
-                document.documentElement.scrollTop -= backTop - speedTop;
-                if (backTop === 0) {
-                    clearInterval(timer);
-                }
-            }, 30);
-        }
-        let pageHeight = 700;
-        let nav = document.getElementById("nav");
-        let navTop = nav.offsetTop;
-        window.onscroll = function () {
-            let backTop = document.documentElement.scrollTop || document.body.scrollTop;
-            if (backTop > pageHeight) {
-                tp.style.display = "block";
-            } else {
-                tp.style.display = "none";
-            }
-            if (backTop >= navTop) {
-                nav.style.position = "fixed";
-                nav.style.top = "0";
-                nav.style.left = "0";
-                nav.style.zIndex = "100";
-            } else {
-                nav.style.position = "";
-            }
-        }
-    }
-
-</script>
 </body>
 </html>
