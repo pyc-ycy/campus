@@ -109,11 +109,24 @@ public class WebController {
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         Student s = studentRepository.findNameByStudentID(currentStudentId);
-        friendListRepository.setOnlineStatus(onlineStatus,currentStudentId);
+        studentRepository.setOnlineStatus(onlineStatus,currentStudentId);
         Msg msg = new Msg("","","");
         model.addAttribute("msg",msg);
         model.addAttribute("curUse",s);
         return "page/UserCenter";
+    }
+    @RequestMapping("/toBrowseFriendInfo")
+    public String toBrowseFriendInfo(Model model, HttpSession session,
+                                     @Param("toName")String toName){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        Student stu = studentRepository.findNameByStudentID(toName);
+        Msg msg = new Msg("","","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        model.addAttribute("stu",stu);
+        return "page/BrowseFriendInfo";
     }
     @RequestMapping("/addFriend")
     public String addFriend(Model model, HttpSession session,
@@ -136,6 +149,19 @@ public class WebController {
         model.addAttribute("msg",msg);
         model.addAttribute("curUse",s);
         return "page/AddFriend";
+    }
+    @RequestMapping("/toVerifyFriend")
+    public String toVerifyFriend(Model model, HttpSession session) {
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        List<FriendList> fl = friendListRepository.toNameIsFalseByToName(currentStudentId);
+        int len = fl.size();
+        Msg msg = new Msg("待验证好友申请数量：", "一共"+len+"个","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        model.addAttribute("fl",fl);
+        return "page/VerifyFriend";
     }
     @RequestMapping("/toChangePWD")
     public String toChangePWD(Model model,HttpSession session){

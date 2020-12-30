@@ -22,6 +22,7 @@ public class Student {
     private String weChat;
     private String QQ;
     private int admin;
+    private boolean onlineStatus;
 
     public Student() {
         super();
@@ -35,10 +36,19 @@ public class Student {
         this.weChat = weChat;
         this.QQ = QQ;
         this.admin = admin;
+        this.onlineStatus=false;
     }
 
     public void setAdmin(int admin) {
         this.admin = admin;
+    }
+
+    public boolean isOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(boolean onlineStatus) {
+        this.onlineStatus = onlineStatus;
     }
 
     public int getAdmin() {

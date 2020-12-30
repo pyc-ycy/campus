@@ -4,8 +4,8 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户中心</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
+    <title>好友申请验证</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/oppo.css">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -19,15 +19,36 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <style>
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+        .user-info{
+            margin: 10px auto;
+            width: 800px;
+            height: auto;
+        }
+        #scroll {
+            position:fixed; top:300px; right:100px;
+        }
+        .scrollItem {
+            width:20px; height:70px;border:#e1e1e1 1px solid; cursor:pointer; text-align:center; padding-top:10px;
+        }
+
+    </style>
+    <script src="http://www.jq22.com/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript">
         $(function () {
             var speed = 800;//滚动速度
             var h=document.body.clientHeight;
             //回到顶部
             $("#toTop").click(function () {
-
                 $('html,body').animate({
-
                         scrollTop: '0px'
                     },
                     speed);
@@ -40,30 +61,11 @@
                         scrollTop: h+'px'
                     },
                     speed);
+
             });
         });
+
     </script>
-    <style>
-        body {
-            background: #eee;
-            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            color: #000;
-            margin: 0;
-            padding: 0;
-        }
-        .user-info{
-            margin: 10px auto;
-            width: 100%;
-            height: auto;
-        }
-        #scroll {
-            position:fixed; top:300px; right:100px;
-        }
-        .scrollItem {
-            width:20px; height:70px;border:#e1e1e1 1px solid; cursor:pointer; text-align:center; padding-top:10px;
-        }
-    </style>
 </head>
 <body>
 <!--页面顶部-->
@@ -97,10 +99,10 @@
             <li><a href="/home">Home</a></li>
             <li><a href="/learn">学习资源</a></li>
             <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
         </ul>
     </div>
@@ -109,7 +111,7 @@
     <div class="row">
         <div class="col-sm-4">
             <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">信息查看</a> </li>
+                <li><a href="/userCenter">信息查看</a> </li>
                 <li><a href="/updateUserInfo">更新信息</a></li>
                 <li><a href="/sign">注册</a></li>
                 <li><a href="/toChangePWD">修改密码</a></li>
@@ -119,62 +121,34 @@
                 <li><a href="/publicChatRoom">公共聊天室</a> </li>
                 <li><a href="/toAddFriend">添加好友</a> </li>
                 <li><a href="/toMyFriend">我的好友</a> </li>
-                <li><a href="/toVerifyFriend">好友申请验证</a> </li>
+                <li class="active"><a href="/toVerifyFriend">好友申请验证</a> </li>
             </ul>
             <hr class="hidden-sm hidden-md hidden-lg">
         </div>
-        <div class="col-sm-8" style="height: 800px;">
+        <div class="col-md-8">
             <div class="starter-template">
                 <h1 th:text="${msg.title}"></h1>
                 <p class="bg-primary" th:text="${msg.content}"></p>
             </div>
-           <div class="user-info" th:if="${not #lists.isEmpty(curUse)}">
-               <div class="panel panel-primary">
-                   <div class="panel-heading">
-                       <h3 class="panel-title">用户信息</h3>
-                   </div>
-                   <div class="panel-body">
-                       <ul class="list-group">
-                           <li class="list-group-item-heading">
-                               姓名：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getName()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">
-                               学号：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getStudentID()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">
-                               QQ：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getQQ()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">
-                               微信：
-                           </li>
-                           <li class="list-group-item-text">
-                               <span th:text="${curUse.getWeChat()}"></span>
-                           </li>
-                           <li class="list-group-item-heading">设置在线状态：</li>
-                           <li class="list-group-item-text">
-                               <button class="btn btn-primary" onclick="window.location.href='/saveOnlineStatus?onlineStatus=1'">
-                                   在线
-                               </button>
-                               <button class="btn btn-primary" onclick="window.location.href='/saveOnlineStatus?onlineStatus=0'">
-                                   隐身
-                               </button>
-                           </li>
-                       </ul>
-                   </div>
-               </div>
-           </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">好友申请待验证</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group" th:if="${not #lists.isEmpty(fl)}">
+                            <li class="list-group-item list-group-item-info" th:each="TFL:${fl}">
+                                <span th:text="${TFL.getFromName()}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+        <!--TODO:编辑通过好友申请的功能-->
     </div>
 </div>
+
 <div id="after_sale">
     <div class="container">
         <ul>
@@ -224,30 +198,8 @@
     <div class="scrollItem" id="toTop">顶部</div>
     <div class="scrollItem" id="toBottom">底部</div>
 </div>
-<script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
-<script type="text/javascript" src="../../static/js/oppo.js"></script>
-<script>
-    window.onload = function () {
+<script type="text/javascript" src="../static/js/jquery-1.11.3.js"></script>
+<script type="text/javascript" src="../static/js/oppo.js"></script>
 
-        let tp = document.getElementById("btn");
-        tp.style.display = "none";
-        let timer = null;
-        tp.onclick = function () {
-            timer = setInterval(function () {
-                let backTop = document.documentElement.scrollTop || document.body.scrollTop;
-                // 越滚月慢
-                let speedTop = backTop / 5;
-                document.documentElement.scrollTop -= backTop - speedTop;
-                if (backTop === 0) {
-                    clearInterval(timer);
-                }
-            }, 30);
-        }
-        let pageHeight = 700;
-        let nav = document.getElementById("nav");
-        let navTop = nav.offsetTop;
-    }
-
-</script>
 </body>
 </html>

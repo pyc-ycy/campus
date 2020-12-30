@@ -23,15 +23,15 @@ public interface FriendListRepository extends JpaRepository<FriendList,Long> {
     List<FriendList> toNameIsFalseByFromName(String fromName);
     @Modifying
     @Transactional
+    @Query("select fl from FriendList fl where fl.toName=?1 and fl.status=false ")
+    List<FriendList> toNameIsFalseByToName(String toName);
+    @Modifying
+    @Transactional
     @Query("select fl from FriendList fl where fl.fromName=?1 and fl.status=true ")
     List<FriendList> findMyFriendsByFromName(String fromName);
     @Modifying
     @Transactional
     @Query("select fl from FriendList fl where fl.toName=?1 and fl.status=true")
     List<FriendList> findMyFriendsByToName(String toName);
-    @Modifying
-    @Transactional
-    @Query("update FriendList fl set fl.onlineStatus=?1 where fl.fromName=?2")
-    void setOnlineStatus(Boolean onlineStatus,String fromName);
 
 }

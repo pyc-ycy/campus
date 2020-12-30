@@ -20,7 +20,6 @@ public class FriendList {
     private String fromName;    //主动添加方
     private String toName;
     private Boolean status; // 标识双方是否通过好友申请
-    private Boolean onlineStatus;   // 是否在线
     public FriendList() {
         super();
     }
@@ -28,7 +27,6 @@ public class FriendList {
         this.fromName=fromName;
         this.toName=toName;
         this.status=false;
-        this.onlineStatus=false;
     }
 
     public void setId(long id) {
@@ -45,14 +43,6 @@ public class FriendList {
 
     public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    public void setOnlineStatus(Boolean onlineStatus) {
-        this.onlineStatus = onlineStatus;
-    }
-
-    public Boolean getOnlineStatus() {
-        return onlineStatus;
     }
 
     public long getId() {

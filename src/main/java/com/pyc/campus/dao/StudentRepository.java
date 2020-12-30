@@ -27,6 +27,10 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Transactional
     @Query("update Student s set s.password=?1 where s.studentID=?2")
     int saveChangePWD(String password, String studentID);
+    @Modifying
+    @Transactional
+    @Query("update Student s set s.onlineStatus=?1 where s.studentID=?2")
+    void setOnlineStatus(Boolean onlineStatus, String studentID);
     // 根据Student ID前缀查询
     @Modifying
     @Transactional

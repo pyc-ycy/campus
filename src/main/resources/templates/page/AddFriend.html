@@ -98,7 +98,7 @@
             <li><a href="/home">Home</a></li>
             <li><a href="/learn">学习资源</a></li>
             <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="#" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
@@ -120,6 +120,7 @@
                 <li><a href="/publicChatRoom">公共聊天室</a></li>
                 <li class="active"><a href="/toAddFriend">添加好友</a></li>
                 <li><a href="/toMyFriend">我的好友</a> </li>
+                <li><a href="/toVerifyFriend">好友申请验证</a> </li>
             </ul>
             <hr class="hidden-sm hidden-md hidden-lg">
         </div>
