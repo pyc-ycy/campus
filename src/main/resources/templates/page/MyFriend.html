@@ -150,10 +150,12 @@
                         <h3 class="panel-title">好友列表</h3>
                     </div>
                     <div class="panel-body">
-                        <ul class="list-group" th:if="${not #lists.isEmpty(Fl) or #lists.isEmpty(Fl1)}">
+                        <ul class="list-group" th:if="${not #lists.isEmpty(Fl)}">
                             <li class="list-group-item list-group-item-info" th:each="FL:${Fl}">
                                 <span th:text="${FL.getToName()}"></span>
                             </li>
+                        </ul>
+                        <ul class="list-group" th:if="${not #lists.isEmpty(Fl1)}">
                             <li class="list-group-item list-group-item-info" th:each="FL1:${Fl1}">
                                 <span th:text="${FL1.getFromName()}"></span>
                             </li>
@@ -181,7 +183,7 @@
                             </li>
                             <li class="list-group-item-heading">请输入要发起私聊的好友学号：</li>
                             <li class="list-group-item-text">
-                                <form name="chatFrom" method="post" action="#" onsubmit="check()">
+                                <form name="chatFrom" method="post" action="/toPrivateChat" th:action="@{/toPrivateChat}" onsubmit="check()" target="_blank">
                                     <label>
                                         <input type="text" name="toName" placeholder="示例：201724073161">
                                     </label>

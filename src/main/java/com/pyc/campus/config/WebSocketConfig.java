@@ -20,10 +20,11 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/endpointPublicChat").withSockJS();
+        registry.addEndpoint("/endPointChat").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/publicChat");
+        registry.enableSimpleBroker("/queue", "/publicChat");
     }
 }

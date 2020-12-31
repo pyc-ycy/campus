@@ -9,9 +9,15 @@ package com.pyc.campus.controller;
 
 import com.pyc.campus.domain.PublishMessage;
 import com.pyc.campus.domain.ResponseMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import java.security.Principal;
 
 @Controller
 public class ChatController {
@@ -20,5 +26,12 @@ public class ChatController {
     public ResponseMessage say(PublishMessage message) throws Exception{
         Thread.sleep(500);
         return new ResponseMessage(message.getName()+":"+message.getContent());
+    }
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
+    @MessageMapping(value = "/chat/{name}")
+    public void handleChat(Principal principal, String msg,  @DestinationVariable String name){
+        messagingTemplate.convertAndSendToUser(name,"/queue/notification",principal.getName()+"-send:"+msg);
     }
 }

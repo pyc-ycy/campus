@@ -138,6 +138,7 @@
                     <div class="panel-body">
                         <ul class="list-group" th:if="${not #lists.isEmpty(fl)}">
                             <li class="list-group-item list-group-item-info" th:each="TFL:${fl}">
+                                <!--/*@thymesVar id="getFromName" type="com.pyc.campus.domain.FriendList"*/-->
                                 <span th:text="${TFL.getFromName()}"></span>
                             </li>
                         </ul>
@@ -145,10 +146,37 @@
                 </div>
             </div>
         </div>
-        <!--TODO:编辑通过好友申请的功能-->
+        <div class="col-md-8">
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">好友申请确认</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item-heading">请输入通过好友申请的学号：</li>
+                            <li class="list-group-item-text">
+                                <form name="browseFriendInfo" method="post" th:action="@{/verifyFriend}" action="/verifyFriend" onsubmit="return check(browseFriendInfo.toName.value)">
+                                    <label>
+                                        <input type="text" name="fromName" placeholder="示例：201724073161">
+                                    </label>
+                                    <input class="btn-primary" type="submit" value="确认">
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
+<script type="text/javascript">
+    function check(value) {
+        if(value!=="")
+            return true;
+        return false;
+    }
+</script>
 <div id="after_sale">
     <div class="container">
         <ul>

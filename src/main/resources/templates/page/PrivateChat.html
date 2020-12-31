@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>私聊</title>
+    <script src="js/stomp.min.js"></script>
+    <script src="js/sockjs.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+<div class="panel panel-primary">
+    <div class="page-header">
+        <h3 class="panel-title">注意</h3>
+    </div>
+    <div class="panel-body">
+        <div class="panel-heading" th:text="${msg.title}"></div>
+        <div class="panel-info" th:text="${msg.content}"></div>
+    </div>
+</div>
+<div  th:if="${friendStatus}">
+    <p>聊天室</p>
+    <form id="chatForm">
+        <label for="fromName">我：</label>
+        <input type="text" id="fromName" name="fromName" th:value="${fromName}" readonly="readonly">
+        <br>
+        <label for="toName">对方：</label>
+        <input type="text" id="toName" name="toName" th:value="${toName}" readonly="readonly">
+        <br>
+        <label>
+            <textarea rows="4" cols="60" name="text"></textarea>
+        </label>
+        <br>
+        <input type="submit" value="发送">
+    </form>
+    <div class="col-md-8" id="output"></div>
+</div>
+<script th:inline="javascript">
+    $('#chatForm').submit(function (e) {
+        e.preventDefault();
+        var text = $('#chatForm').find('textarea[name="text"]').val();
+        var fromName = $('#chatForm').find('input[name="fromName"]').val();
+        var toName = $('#chatForm').find('input[name="toName"]').val();
+        sendSpittle(text,fromName,toName);
+    });
+    var sock = new SockJS("/endPointChat");
+    var stomp = Stomp.over(sock);
+    stomp.connect('guest','guest',function (frame) {
+        stomp.subscribe("/user/queue/notification",handleNotification);
+    });
+    function handleNotification(message) {
+        $('#output').append("</br>Received: "+message.body+"</b></br>")
+    }
+    function sendSpittle(text,fromName,toName) {
+        stomp.send("/chat/"+toName,{},text);
+    }
+    $('#stop').click(function () {
+        sock.close()
+    });
+</script>
+</body>

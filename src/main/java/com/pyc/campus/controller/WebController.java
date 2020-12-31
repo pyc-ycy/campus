@@ -163,6 +163,68 @@ public class WebController {
         model.addAttribute("fl",fl);
         return "page/VerifyFriend";
     }
+    @RequestMapping("/verifyFriend")
+    public String verifyFried(Model model, HttpSession session,
+                              @Param("fromName")String fromName){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        int result = friendListRepository.setStatus(fromName,currentStudentId);
+        List<FriendList> fl = friendListRepository.toNameIsFalseByToName(currentStudentId);
+        int len = fl.size();
+        if(result!=0){
+            Msg msg = new Msg("待验证好友申请数量：", "一共"+len+"个","");
+            model.addAttribute("msg",msg);
+            model.addAttribute("curUse",s);
+            model.addAttribute("fl",fl);
+            return "page/VerifyFriend";
+        }
+        Msg msg = new Msg("错误：", "请检查输入的学号","");
+        model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
+        model.addAttribute("fl",fl);
+        return "page/VerifyFriend";
+    }
+    @RequestMapping("/toPrivateChat")
+    public String toPrivateChat(Model model,HttpSession session,
+                                @Param("toName")String toName){
+
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        boolean s;
+        FriendList s1 = friendListRepository.getStatus(currentStudentId,toName);
+        FriendList s2 = friendListRepository.getStatus(toName,currentStudentId);
+        if(s1!=null)
+            s=s1.getStatus();
+        else if (s2!=null)
+            s=s2.getStatus();
+        else
+            s=false;
+        model.addAttribute("friendStatus",s);
+        if(s)
+        {
+            boolean stu = studentRepository.getOnlineStatus(toName).isOnlineStatus();
+            model.addAttribute("onlineStatus",stu);
+            if(stu)
+            {
+                Msg msg = new Msg("提示：","对方在线，当前只提供临时聊天，不保存聊天记录，见谅","");
+                model.addAttribute("fromName",currentStudentId);
+                model.addAttribute("toName",toName);
+                model.addAttribute("msg",msg);
+                return "page/PrivateChat";
+            }
+            Msg msg = new Msg("提示：","对方不在线，你所发送的消息，可能无法被及时回复","");
+            model.addAttribute("fromName",currentStudentId);
+            model.addAttribute("toName",toName);
+            model.addAttribute("msg",msg);
+            return "page/PrivateChat";
+        }
+        Msg msg = new Msg("提示：","对方不是你的好友，无法进行私聊","");
+        model.addAttribute("fromName",currentStudentId);
+        model.addAttribute("toName",toName);
+        model.addAttribute("msg",msg);
+        return "page/PrivateChat";
+    }
     @RequestMapping("/toChangePWD")
     public String toChangePWD(Model model,HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");

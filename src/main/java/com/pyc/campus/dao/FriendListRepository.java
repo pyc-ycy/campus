@@ -33,5 +33,10 @@ public interface FriendListRepository extends JpaRepository<FriendList,Long> {
     @Transactional
     @Query("select fl from FriendList fl where fl.toName=?1 and fl.status=true")
     List<FriendList> findMyFriendsByToName(String toName);
-
+    @Modifying
+    @Transactional
+    @Query("update FriendList fl set fl.status=true where fl.fromName=?1 and fl.toName=?2")
+    int setStatus(String fromName, String toName);
+    @Query("select fl from FriendList fl where fl.fromName=?1 and fl.toName=?2")
+    FriendList getStatus(String fromName, String toName);
 }
