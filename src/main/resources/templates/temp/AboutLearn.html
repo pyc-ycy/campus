@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
-      lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>学习资源</title>
+    <meta charset="utf-8">
+    <title>学习中心</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
-    <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function () {
@@ -35,93 +32,19 @@
         });
     </script>
     <style>
+        .fakeimg {
+            height: 200px;
+            background: #aaa;
+        }
         #scroll {
             position:fixed; top:300px; right:100px;
         }
         .scrollItem {
             width:20px; height:70px;border:#e1e1e1 1px solid; cursor:pointer; text-align:center; padding-top:10px;
         }
-        body {
-            background: #eee;
-            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-            font-size: 16px;
-            color: #000;
-            margin: 0;
-            padding: 0;
-        }
-
-        .main {
-            margin: 10px auto;
-            width: 65%;
-            height: 1400px;
-            /*background-color: yellowgreen;*/
-        }
-
-        .main p {
-            font-size: 18px;
-            text-indent: 3em;
-        }
-
-        .main h1 {
-            font-size: 24px;
-        }
-
-        .main img {
-            margin-left: 25px;
-        }
-
-        .line {
-            border: 1px solid black;
-            /*margin-left: 10%;*/
-            width: 25%;
-        }
-
-        .main h2 {
-            font-size: 20px;
-            text-indent: 25px;
-        }
-
-        .leftContent {
-            position: fixed;
-            left: 0;
-            top: 14%;
-            bottom: 50px;
-            width: 15%;
-            height: 80%;
-            background-color: #fff;
-        }
-
-        .item {
-            margin: 50px 20px;
-        }
-
-        .item-bgc {
-            text-align: center;
-            line-height: 50px;
-            vertical-align: middle;
-            background-color: #9e9899;
-            height: 50px;
-        }
-
-        .leftContent a {
-            font-size: 18px;
-            text-decoration: none;
-            color: #2e6da4;
-        }
-
-        .leftContent a:hover {
-            font-size: 22px;
-            text-decoration: black;
-            color: blue;
-        }
     </style>
 </head>
 <body>
-<!--页面顶部-->
-<div id="top">
-    <div class="container"></div>
-</div>
-<!-- 页面的头部 -->
 <div id="header">
     <div class="container">
         <div class="header_left left">
@@ -130,42 +53,41 @@
             <div class="tel">150-1436-6986</div>
         </div>
         <ul>
-            <li>
-                <form th:action="@{/logout}" method="post">
-                    <input type="submit" class="btn btn-link" th:value="安全退出">
-                </form>
-            </li>
+            <li><a href="/login">登录</a></li>
+            <li><a href="/sign">注册</a></li>
         </ul>
     </div>
 </div>
-<!-- 页面的导航 -->
-<div id="nav">
-    <div class="container">
-        <div class="logo left">
-            <h1>Campus</h1>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/campus">Campus</a>
         </div>
-        <ul>
-            <li><a href="/home">Home</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/learn">
-                    学习中心<span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/learn">编程学习</a></li>
-                    <li><a href="/toEnglish">英语</a></li>
-                    <li><a href="/toMath">数学</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/toPhilosophy">哲学</a></li>
-                </ul>
-            </li>
-            <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
-            <li><a href="/toHelp">帮助中心</a> </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/campus">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/aboutLearn">
+                        学习中心<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/aboutLearn">编程学习</a></li>
+                        <li><a href="#">英语</a></li>
+                        <li><a href="#">数学</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">哲学</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-</div>
+</nav>
+
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
@@ -186,7 +108,7 @@
             <h2>CSDN</h2>
             <h5>China Software Developer Network</h5>
             <div class="fakeimg">
-                <img src="images/campus/CSDN.jpg" width="240px" height="240px">
+                <img src="images/campus/CSDN.jpg">
             </div>
             <p>
                 <strong>CSDN</strong>全称为“<strong>Chinese Software Developer Network</strong>",是国内著名的<strong>IT社区</strong>
@@ -198,7 +120,7 @@
             <h2>Gitee</h2>
             <h5>国内代码托管平台</h5>
             <div class="fakeimg">
-                <img src="images/campus/Gitee.jpg" width="250px" height="250px">
+                <img src="images/campus/Gitee.jpg">
             </div>
             <p>
                 <strong>Gitee</strong>，也叫<strong>码云</strong>，是由 OSCHINA.NET 推出的代码托管平台，支持 Git 和 SVN，提供免费的私有仓库托管。
@@ -210,7 +132,7 @@
             <h2>菜鸟教程</h2>
             <h5>一个进行编程语言基础学习的文字资料网站</h5>
             <div class="fakeimg">
-                <img src="images/campus/cnjc.jpg" width="300px" height="200px">
+                <img src="images/campus/cnjc.jpg">
             </div>
             <p>
                 菜鸟教程网是供对编程有爱好的非专业人员，或者刚接触编程的计算机和编程相关专业的初学者，对编程语言进行学习的网站，主要是文字教程。
@@ -220,6 +142,10 @@
             </p>
         </div>
     </div>
+</div>
+<div id="scroll">
+    <div class="scrollItem" id="toTop">顶部</div>
+    <div class="scrollItem" id="toBottom">底部</div>
 </div>
 <div id="after_sale">
     <div class="container">
@@ -259,10 +185,6 @@
         </ul>
     </div>
 </div>
-<div id="scroll">
-    <div class="scrollItem" id="toTop">顶部</div>
-    <div class="scrollItem" id="toBottom">底部</div>
-</div>
 <div id="footer">
     <div class="container">
         <p>
@@ -271,8 +193,5 @@
         </p>
     </div>
 </div>
-<script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
-<script type="text/javascript" src="../../static/js/oppo.js"></script>
-
 </body>
 </html>

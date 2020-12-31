@@ -14,7 +14,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,7 +76,7 @@ public class WebController {
         model.addAttribute("curUse",s);
         return "page/UserCenter";
     }
-    @RequestMapping("toAddFriend")
+    @RequestMapping("/toAddFriend")
     public String toAddFriend(Model model, HttpSession session)
     {
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
@@ -87,6 +86,38 @@ public class WebController {
         model.addAttribute("msg",msg);
         model.addAttribute("curUse",s);
         return "page/AddFriend";
+    }
+    @RequestMapping("/toHelp")
+    public String toHelp(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/Help";
+    }
+    @RequestMapping("/toEnglish")
+    public String toEnglish(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/English";
+    }
+    @RequestMapping("/toMath")
+    public String toMath(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/Math";
+    }
+    @RequestMapping("/toPhilosophy")
+    public String toPhilosophy(Model model,HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "page/Philosophy";
     }
     @RequestMapping("/toMyFriend")
     public String toMyFriend(Model model, HttpSession session){

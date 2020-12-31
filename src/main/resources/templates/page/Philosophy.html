@@ -4,21 +4,12 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>网站管理</title>
+    <title>学习资源</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function () {
             var speed = 800;//滚动速度
@@ -44,28 +35,84 @@
         });
     </script>
     <style>
-        body {
-            background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
-            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-            font-size: 14px;
-            color: #000;
-            margin: 0;
-            padding: 0;
-        }
-        .main{
-            margin: 10px auto;
-            width: 800px;
-            height: auto;
-        }
-        .item-box{
-            width: 100px;
-            height: 50px;
-        }
         #scroll {
             position:fixed; top:300px; right:100px;
         }
         .scrollItem {
             width:20px; height:70px;border:#e1e1e1 1px solid; cursor:pointer; text-align:center; padding-top:10px;
+        }
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            margin: 10px auto;
+            width: 65%;
+            height: 1400px;
+            /*background-color: yellowgreen;*/
+        }
+
+        .main p {
+            font-size: 18px;
+            text-indent: 3em;
+        }
+
+        .main h1 {
+            font-size: 24px;
+        }
+
+        .main img {
+            margin-left: 25px;
+        }
+
+        .line {
+            border: 1px solid black;
+            /*margin-left: 10%;*/
+            width: 25%;
+        }
+
+        .main h2 {
+            font-size: 20px;
+            text-indent: 25px;
+        }
+
+        .leftContent {
+            position: fixed;
+            left: 0;
+            top: 14%;
+            bottom: 50px;
+            width: 15%;
+            height: 80%;
+            background-color: #fff;
+        }
+
+        .item {
+            margin: 50px 20px;
+        }
+
+        .item-bgc {
+            text-align: center;
+            line-height: 50px;
+            vertical-align: middle;
+            background-color: #9e9899;
+            height: 50px;
+        }
+
+        .leftContent a {
+            font-size: 18px;
+            text-decoration: none;
+            color: #2e6da4;
+        }
+
+        .leftContent a:hover {
+            font-size: 22px;
+            text-decoration: black;
+            color: blue;
         }
     </style>
 </head>
@@ -112,42 +159,43 @@
                 </ul>
             </li>
             <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
-            </li>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a></li>
             <li><a href="/toHelp">帮助中心</a> </li>
         </ul>
     </div>
 </div>
-<div class="main">
-    <h1><span th:text="${curUse.getName()}"></span>您好！ </h1>
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                网站管理菜单
-            </h3>
-            <div class="panel-body">
-                <div class="list-group">
-                    <div class="item-box list-group-item">
-                        <a href="/publishNews">新闻发布</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/toImportGrade">成绩导入</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/toPublishQuestion">发布悬赏问题</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/manageUser">用户管理</a>
-                    </div>
-                </div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <p>当前页面是一些进行哲学学习时，经常使用到的网站的介绍</p>
+            <h3>链接</h3>
+            <p>友情连接</p>
+            <!--<ul class="nav nav-pills nav-stacked">
+                <li><a href="https://www.csdn.net/">中国IT社区：CSDN</a></li>
+                <li><a href="https://gitee.com/">代码托管平台：Gitee</a></li>
+                <li><a href="https://www.runoob.com/">编程基础学习：Runoob</a></li>
+                <li><a href="https://www.dotcpp.com/course/python/">Python学习</a></li>
+                <li><a href="https://www.liaoxuefeng.com/wiki/1252599548343744">Java学习</a></li>
+                <li><a href="https://www.dotcpp.com/course/cpp/">C++学习</a></li>
+            </ul>-->
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-sm-8">
+            <h2>标题</h2>
+            <h5>副标题</h5>
+            <div class="fakeimg">
+                <h4>图片</h4>
             </div>
+            <p>
+            <h3>介绍内容</h3>
+            </p>
+            <br>
+
         </div>
     </div>
 </div>
-
 <div id="after_sale">
     <div class="container">
         <ul>
@@ -192,12 +240,14 @@
 </div>
 <div id="footer">
     <div class="container">
-        <p style="color: white;text-align: center;">
-            @2020 御承扬Copyright&copy;2020-05-04
+        <p>
+            <span>Campus logo</span>
+            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
         </p>
     </div>
 </div>
 <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="../../static/js/oppo.js"></script>
+
 </body>
 </html>
