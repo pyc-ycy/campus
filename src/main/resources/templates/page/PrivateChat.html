@@ -6,6 +6,7 @@
     <script src="js/stomp.min.js"></script>
     <script src="js/sockjs.min.js"></script>
     <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="../../static/css/chat.css">
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -21,7 +22,8 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
-<div class="panel panel-primary">
+
+<!--<div class="panel panel-primary">
     <div class="page-header">
         <h3 class="panel-title">注意</h3>
     </div>
@@ -35,7 +37,6 @@
     <form id="chatForm">
         <label for="fromName">我：</label>
         <input type="text" id="fromName" name="fromName" th:value="${fromName}" readonly="readonly">
-        <br>
         <label for="toName">对方：</label>
         <input type="text" id="toName" name="toName" th:value="${toName}" readonly="readonly">
         <br>
@@ -46,14 +47,57 @@
         <input type="submit" value="发送">
     </form>
     <div class="col-md-8" id="output"></div>
+</div>-->
+<div class="container">
+    <div class="row">
+        <div style="text-align: center;">
+            <div class="col-md-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            提示
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel-info" th:text="${msg.content}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title" th:text="${toName}">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div style="height: 400px;width: 720px;overflow: auto;background:#EEEEEE;" id="output">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <form class="form-inline" id="chatForm">
+                    <div class="form-group">
+                        <label for="text">输入框：</label>
+                        <input type="text" name="text" class="form-control" style="width: 520px" id="text" placeholder="输入要发送的信息">
+                    </div>
+                    <button type="submit" class="btn btn-primary">发送</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <script th:inline="javascript">
     $('#chatForm').submit(function (e) {
         e.preventDefault();
-        var text = $('#chatForm').find('textarea[name="text"]').val();
-        var fromName = $('#chatForm').find('input[name="fromName"]').val();
-        var toName = $('#chatForm').find('input[name="toName"]').val();
-        sendSpittle(text,fromName,toName);
+        var text = $('#chatForm').find('input[name="text"]').val();
+        /*var fromName = $('#chatForm').find('input[name="fromName"]').val();
+        var toName = $('#chatForm').find('input[name="toName"]').val();*/
+        let str="<div class='left_d'><div class='speech left' ng-class='speech left'>"+text+"</div></div>";
+        $('#output').append(str);
+        sendSpittle(text);
     });
     var sock = new SockJS("/endPointChat");
     var stomp = Stomp.over(sock);
@@ -61,13 +105,17 @@
         stomp.subscribe("/user/queue/notification",handleNotification);
     });
     function handleNotification(message) {
-        $('#output').append("</br>Received: "+message.body+"</b></br>")
+        let str="<div class=\"right_d\"><div class=\"speech right\" ng-class=\"speech right\">"+message.body+"</div></div>";
+        $('#output').append(str);
+        console.log(str);
+        /*$('#output').append("</br><b>"+[[${toName}]]+":"+message.body+"</b></br>")*/
     }
-    function sendSpittle(text,fromName,toName) {
-        stomp.send("/chat/"+toName,{},text);
+    function sendSpittle(text) {
+        stomp.send("/chat/"+[[${toName}]],{},text);
     }
     $('#stop').click(function () {
         sock.close()
     });
 </script>
 </body>
+</html>

@@ -32,6 +32,6 @@ public class ChatController {
 
     @MessageMapping(value = "/chat/{name}")
     public void handleChat(Principal principal, String msg,  @DestinationVariable String name){
-        messagingTemplate.convertAndSendToUser(name,"/queue/notification",principal.getName()+"-send:"+msg);
+        messagingTemplate.convertAndSendToUser(name,"/queue/notification",msg);
     }
 }
