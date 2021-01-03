@@ -3,6 +3,20 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>公共聊天室</title>
+    <link rel="stylesheet" href="../../static/css/chat.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <style>
         body {
             font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -10,29 +24,42 @@
             color: #000;
             margin: 0;
             padding: 0;
-            background: #eee url("../static/images/campus/logo.jpg") center no-repeat fixed;
-        }
-        .main{
-            margin: 10px auto;
-            width: 800px;
-            height: 700px;
         }
     </style>
 </head>
-<body onload="disconnect()">
+<body>
 <noscript><h2 style="color: red">貌似您的浏览器不支持WebSocket</h2> </noscript>
-<div class="main">
-    <div>
-        <div>
-            <button id="connect" onclick="connect();">连接</button>
-            <button id="disconnect" disabled="disabled" onclick="disconnect();">断开连接</button>
-        </div>
-        <div id="conversationDiv">
-            <label for="name">输入名字：</label><input type="text" id="name" />
-            <label for="content">输入消息：</label><input type="text" id="content">
-            <button id="sendName" onclick="sendName();">发送</button>
-            <br><h1>聊天记录框</h1>
-            <div id="response" style="width: 500px;min-height:600px;height: auto;font-size: 26px;border: 1px solid black;"></div>
+<div class="container">
+    <div class="row">
+        <div style="text-align: center;">
+            <br>
+            <br>
+            <div class="col-md-8">
+            </div>
+            <div class="col-md-8" id="conversationDiv">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            群聊聊天室
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body" style="background: #e4b9c0">
+                    <div id="response" style="height: 400px;width: 720px;overflow: auto;background:gray;" >
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <form class="form-inline" id="chatForm">
+                    <div class="form-group">
+                        <label for="name">输入名字：</label><input type="text" name="name" id="name" />
+                        <label for="text">输入框：</label>
+                        <input type="text" name="text" class="form-control" id="text" placeholder="输入要发送的信息">
+                    </div>
+                    <button type="submit" class="btn btn-primary">发送</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -40,50 +67,41 @@
 <script src="js/stomp.min.js"></script>
 <script src="js/jquery.js"></script>
 <script type="text/javascript">
-    var stompClient = null;
-
-    function setConnected(connected) {
-        document.getElementById('connect').disabled = connected;
-        document.getElementById('disconnect').disabled = !connected;
-        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
-        $('#response').html();
-    }
-
-    function connect() {
-        var socket = new SockJS('/endpointPublicChat'); //1
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function(frame) {
-            setConnected(true);
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/publicChat/getResponse', function(response){ //2
-                showResponse(JSON.parse(response.body).responseMessageContent);
-            });
-        });
-    }
-
-
-    function disconnect() {
-        if (stompClient != null) {
-            stompClient.disconnect();
+    $('#chatForm').submit(function (e) {
+        e.preventDefault();
+        let text = $('#chatForm').find('input[name="text"]').val();
+        let name = $('#chatForm').find('input[name="name"]').val();
+        let str="<div class='left_d'><div class='speech left' ng-class='speech left'>"+name+":"+text+"</div></div>";
+        $('#response').append(str);
+        sendSpittle(name,text);
+    });
+    var sock = new SockJS("/endpointPublicChat");
+    var stomp = Stomp.over(sock);
+    stomp.connect({},function (frame) {
+        stomp.subscribe("/publicChat/getResponse",handleNotification);
+    });
+    function handleNotification(message) {
+        let content = JSON.parse(message.body).responseMessageContent;
+        let text = $('#chatForm').find('input[name="text"]').val();
+        let name = $('#chatForm').find('input[name="name"]').val();
+        if(content!==name+":"+text)
+        {
+            let str="<div class=\"right_d\"><div class=\"speech right\" ng-class=\"speech right\">"
+                +content
+                +"</div></div>";
+            $('#response').append(str);
+            console.log(str);
         }
-        setConnected(false);
+    }
+    function sendSpittle(name,text) {
+        stomp.send("/publicChatRoom", {}, JSON.stringify({ 'name': name,'content':text }));
+    }
+    function disconnect() {
+        if (stomp != null) {
+            stomp.disconnect();
+        }
+        /*setConnected(false);*/
         console.log("Disconnected");
-    }
-
-    function sendName() {
-        var name = $('#name').val();
-        var content = $('#content').val();
-        //3
-        stompClient.send("/publicChatRoom", {}, JSON.stringify({ 'name': name,'content':content }));
-    }
-
-    function showResponse(message) {
-        // var response = $("#response");
-        // response.html(message+"<br>");
-        var div = document.getElementById("response");
-        var  p = document.createElement("p");
-        p.innerHTML=message;
-        div.append(p);
     }
 </script>
 </body>
