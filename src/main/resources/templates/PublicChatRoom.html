@@ -84,6 +84,7 @@
         let content = JSON.parse(message.body).responseMessageContent;
         let text = $('#chatForm').find('input[name="text"]').val();
         let name = $('#chatForm').find('input[name="name"]').val();
+        $('#chatForm').find('input[name="text"]').val("");
         if(content!==name+":"+text)
         {
             let str="<div class=\"right_d\"><div class=\"speech right\" ng-class=\"speech right\">"

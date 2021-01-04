@@ -52,16 +52,6 @@
             padding: 0;
             background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
         }
-        .main{
-            margin: 10px auto;
-            width: 800px;
-            height: 700px;
-        }
-        .questions-list{
-            margin: 10px auto;
-            width: 800px;
-            height: auto;
-        }
         #scroll {
             position:fixed; top:300px; right:100px;
         }
@@ -122,78 +112,96 @@
         </ul>
     </div>
 </div>
-<div class="main">
-    <h1>悬赏问题浏览</h1>
-    <p>如果你知道这个问题，请按发布者的邮箱联系发布者</p>
-    <form class="form-inline" name="form"  method="post" th:action="@{/queryByQuestionType}">
-        <div class="form-group">
-            <label for="TypeOfQuestion" class="sr-only">问题类型</label>
-            <div class="input-group">
-                <input type="text" name="TypeOfQuestion" id="TypeOfQuestion" placeholder="问题类型">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    所有问题的悬赏由发布者提供，本平台不收取任何中介费。
+                </li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-md-8">
+            <h1>悬赏问题浏览</h1>
+            <p>如果你知道这个问题，请按发布者的邮箱联系发布者</p>
+            <form class="form-inline" name="form"  method="post" th:action="@{/queryByQuestionType}">
+                <div class="form-group">
+                    <label for="TypeOfQuestion" class="sr-only">问题类型</label>
+                    <div class="input-group">
+                        <input type="text" name="TypeOfQuestion" id="TypeOfQuestion" placeholder="问题类型">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+            <div class="table-box">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>发布者</th>
+                        <th>邮箱</th>
+                        <th>问题类型</th>
+                        <th>问题内容</th>
+                        <th>悬赏</th>
+                    </tr>
+                    </thead>
+                    <tbody th:if="${not #lists.isEmpty(questions)}">
+                    <tr th:each="question:${questions}">
+                        <td th:text="${question.getPublisher()}"></td>
+                        <td th:text="${question.mail}"></td>
+                        <td th:text="${question.type}"></td>
+                        <td th:text="${question.content}"></td>
+                        <td th:text="${question.reward}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">搜索</button>
-    </form>
-    <div class="table-box">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>发布者</th>
-                <th>邮箱</th>
-                <th>问题类型</th>
-                <th>问题内容</th>
-                <th>悬赏</th>
-            </tr>
-            </thead>
-            <tbody th:if="${not #lists.isEmpty(questions)}">
-            <tr th:each="question:${questions}">
-                <td th:text="${question.getPublisher()}"></td>
-                <td th:text="${question.mail}"></td>
-                <td th:text="${question.type}"></td>
-                <td th:text="${question.content}"></td>
-                <td th:text="${question.reward}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div id="after_sale">
-    <div class="container">
-        <ul>
-            <li>
-                <ol>
-                    <li><a href="#">联系方式</a></li>
-                    <li><a href="#">15014366986</a></li>
-                    <li><a href="#">2923616405</a></li>
-                    <li><a href="#">pyc852164</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li><a href="#">关于我</a></li>
-                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
-                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
-                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>我的博客文章，</li>
-                    <li>我的代码托管平台，</li>
-                    <li>也是代码托管平台，</li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>可以了解我的所学</li>
-                    <li>可以看到我的开源代码</li>
-                    <li>为避免Github访问不了</li>
-                </ol>
-            </li>
-        </ul>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">联系方式</a></li>
+                        <li><a href="#" style="font-size: larger">15014366986</a></li>
+                        <li><a href="#" style="font-size: larger">2923616405</a></li>
+                        <li><a href="#" style="font-size: larger">pyc852164</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">关于我</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42896653"
+                               target="_blank" style="font-size: larger">
+                            CSDN:我的关于计算机学习的博客地址
+                        </a></li>
+                        <li><a href="https://github.com/pyc-ycy"
+                               target="_blank" style="font-size: larger">
+                            Github：编程学习项目源代码托管仓库地址
+                        </a></li>
+                        <li><a href="https://gitee.com/pengyoucongcode"
+                               target="_blank" style="font-size: larger">
+                            Gitee：学习项目源代码托管地址
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li style="font-size: larger">关于我</li>
+                        <li style="font-size: larger">我的博客文章，主要是计算机学习方面</li>
+                        <li style="font-size: larger">我的代码托管平台，以C++和Java为主</li>
+                        <li style="font-size: larger">也是代码托管平台，以C++和Java为主</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="scroll">
@@ -201,9 +209,9 @@
     <div class="scrollItem" id="toBottom">底部</div>
 </div>
 <div id="footer">
-    <div class="container">
-        <p style="color: white;text-align: center;">
-            @2020 御承扬Copyright&copy;2020-05-04
+    <div style="text-align: center">
+        <p>
+            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
         </p>
     </div>
 </div>

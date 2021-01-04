@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>私聊</title>
+    <title>私聊聊天室</title>
     <script src="js/stomp.min.js"></script>
     <script src="js/sockjs.min.js"></script>
     <script src="js/jquery.js"></script>
@@ -71,6 +71,7 @@
         var toName = $('#chatForm').find('input[name="toName"]').val();*/
         let str="<div class='left_d'><div class='speech left' ng-class='speech left'>"+text+"</div></div>";
         $('#output').append(str);
+        $('#chatForm').find('input[name="text"]').val("");
         sendSpittle(text);
     });
     var sock = new SockJS("/endPointChat");

@@ -58,15 +58,9 @@
             padding: 0;
             background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
         }
-        .main{
-            margin: 10px auto;
-            width: 800px;
-            height: auto;
-        }
         .table-box{
-            margin: 5px auto;
             width: 100%;
-            height: 1000px;
+            height: 400px;
         }
     </style>
 </head>
@@ -122,95 +116,113 @@
         </ul>
     </div>
 </div>
-<div class="main">
-    <br>
-    <form class="form-inline" name="form"  method="post" th:action="@{/queryByTerm}">
-        <div class="form-group">
-            <label for="term" class="sr-only">学年学期</label>
-            <div class="input-group">
-                <input type="text" name="term" id="term" placeholder="起始年-结束年-学期">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <ul class="nav nav-pills nav-stacked">
+                <li>
+                    请按格式进行条件查询
+                </li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-md-8">
+            <form class="form-inline" name="form"  method="post" th:action="@{/queryByTerm}">
+                <div class="form-group">
+                    <label for="term" class="sr-only">学年学期</label>
+                    <div class="input-group">
+                        <input type="text" name="term" id="term" placeholder="起始年-结束年-学期">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">查询</button>
+            </form>
+            <div class="table-box">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>学年学期</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>课程编号</th>
+                        <th>课程名称</th>
+                        <th>总成绩</th>
+                        <th>绩点</th>
+                        <th>学时</th>
+                        <th>学分</th>
+                    </tr>
+                    </thead>
+                    <tbody th:if="${not #lists.isEmpty(gradeItems)}">
+                    <tr th:each="grade:${gradeItems}">
+                        <td th:text="${grade.term}"></td>
+                        <td th:text="${grade.studentID}"></td>
+                        <td th:text="${grade.name}"></td>
+                        <td th:text="${grade.courseCode}"></td>
+                        <td th:text="${grade.courseName}"></td>
+                        <td th:text="${grade.grade}"></td>
+                        <td th:text="${grade.gpa}"></td>
+                        <td th:text="${grade.learnHour}"></td>
+                        <td th:text="${grade.credit}"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">查询</button>
-    </form>
-    <div class="table-box">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>学年学期</th>
-                <th>学号</th>
-                <th>姓名</th>
-                <th>课程编号</th>
-                <th>课程名称</th>
-                <th>总成绩</th>
-                <th>绩点</th>
-                <th>学时</th>
-                <th>学分</th>
-            </tr>
-            </thead>
-            <tbody th:if="${not #lists.isEmpty(gradeItems)}">
-            <tr th:each="grade:${gradeItems}">
-                <td th:text="${grade.term}"></td>
-                <td th:text="${grade.studentID}"></td>
-                <td th:text="${grade.name}"></td>
-                <td th:text="${grade.courseCode}"></td>
-                <td th:text="${grade.courseName}"></td>
-                <td th:text="${grade.grade}"></td>
-                <td th:text="${grade.gpa}"></td>
-                <td th:text="${grade.learnHour}"></td>
-                <td th:text="${grade.credit}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">联系方式</a></li>
+                        <li><a href="#" style="font-size: larger">15014366986</a></li>
+                        <li><a href="#" style="font-size: larger">2923616405</a></li>
+                        <li><a href="#" style="font-size: larger">pyc852164</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">关于我</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42896653"
+                               target="_blank" style="font-size: larger">
+                            CSDN:我的关于计算机学习的博客地址
+                        </a></li>
+                        <li><a href="https://github.com/pyc-ycy"
+                               target="_blank" style="font-size: larger">
+                            Github：编程学习项目源代码托管仓库地址
+                        </a></li>
+                        <li><a href="https://gitee.com/pengyoucongcode"
+                               target="_blank" style="font-size: larger">
+                            Gitee：学习项目源代码托管地址
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li style="font-size: larger">关于我</li>
+                        <li style="font-size: larger">我的博客文章，主要是计算机学习方面</li>
+                        <li style="font-size: larger">我的代码托管平台，以C++和Java为主</li>
+                        <li style="font-size: larger">也是代码托管平台，以C++和Java为主</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div id="after_sale">
-    <div class="container">
-        <ul>
-            <li>
-                <ol>
-                    <li><a href="#">联系方式</a></li>
-                    <li><a href="#">15014366986</a></li>
-                    <li><a href="#">2923616405</a></li>
-                    <li><a href="#">pyc852164</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li><a href="#">关于我</a></li>
-                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
-                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
-                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>我的博客文章，</li>
-                    <li>我的代码托管平台，</li>
-                    <li>也是代码托管平台，</li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>可以了解我的所学</li>
-                    <li>可以看到我的开源代码</li>
-                    <li>为避免Github访问不了</li>
-                </ol>
-            </li>
-        </ul>
-    </div>
-</div>
 <div id="scroll">
     <div class="scrollItem" id="toTop">顶部</div>
     <div class="scrollItem" id="toBottom">底部</div>
 </div>
 <div id="footer">
-    <div class="container">
-        <p style="color: white;text-align: center;">
-            @2020 御承扬Copyright&copy;2020-05-04
+    <div style="text-align: center">
+        <p>
+            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
         </p>
     </div>
 </div>

@@ -52,15 +52,6 @@
             margin: 0;
             padding: 0;
         }
-        .main{
-            margin: 10px auto;
-            width: 800px;
-            height: auto;
-        }
-        .item-box{
-            width: 100px;
-            height: 50px;
-        }
         #scroll {
             position:fixed; top:300px; right:100px;
         }
@@ -121,69 +112,81 @@
         </ul>
     </div>
 </div>
-<div class="main">
-    <h1><span th:text="${curUse.getName()}"></span>您好！ </h1>
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                网站管理菜单
-            </h3>
-            <div class="panel-body">
-                <div class="list-group">
-                    <div class="item-box list-group-item">
-                        <a href="/publishNews">新闻发布</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/toImportGrade">成绩导入</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/toPublishQuestion">发布悬赏问题</a>
-                    </div>
-                    <div class="item-box list-group-item">
-                        <a href="/manageUser">用户管理</a>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2>网站管理菜单</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="/publishNews">新闻发布</a> </li>
+                <li><a href="/toImportGrade">成绩导入</a> </li>
+                <li><a href="/toPublishQuestion">发布悬赏问题</a> </li>
+                <li><a href="/manageUser">管理用户</a> </li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-md-8">
+            <h2 th:text="${curUse.getName()}"></h2>
+            <h4>
+                您好,请您遵守以下管理条例管理网站。
+            </h4>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        网站管理条例
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-info" style="height: 600px;overflow: auto;">
+
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div id="after_sale">
-    <div class="container">
-        <ul>
-            <li>
-                <ol>
-                    <li><a href="#">联系方式</a></li>
-                    <li><a href="#">15014366986</a></li>
-                    <li><a href="#">2923616405</a></li>
-                    <li><a href="#">pyc852164</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li><a href="#">关于我</a></li>
-                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
-                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
-                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>我的博客文章，</li>
-                    <li>我的代码托管平台，</li>
-                    <li>也是代码托管平台，</li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>可以了解我的所学</li>
-                    <li>可以看到我的开源代码</li>
-                    <li>为避免Github访问不了</li>
-                </ol>
-            </li>
-        </ul>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">联系方式</a></li>
+                        <li><a href="#" style="font-size: larger">15014366986</a></li>
+                        <li><a href="#" style="font-size: larger">2923616405</a></li>
+                        <li><a href="#" style="font-size: larger">pyc852164</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">关于我</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42896653"
+                               target="_blank" style="font-size: larger">
+                            CSDN:我的关于计算机学习的博客地址
+                        </a></li>
+                        <li><a href="https://github.com/pyc-ycy"
+                               target="_blank" style="font-size: larger">
+                            Github：编程学习项目源代码托管仓库地址
+                        </a></li>
+                        <li><a href="https://gitee.com/pengyoucongcode"
+                               target="_blank" style="font-size: larger">
+                            Gitee：学习项目源代码托管地址
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li style="font-size: larger">关于我</li>
+                        <li style="font-size: larger">我的博客文章，主要是计算机学习方面</li>
+                        <li style="font-size: larger">我的代码托管平台，以C++和Java为主</li>
+                        <li style="font-size: larger">也是代码托管平台，以C++和Java为主</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="scroll">
@@ -191,9 +194,9 @@
     <div class="scrollItem" id="toBottom">底部</div>
 </div>
 <div id="footer">
-    <div class="container">
-        <p style="color: white;text-align: center;">
-            @2020 御承扬Copyright&copy;2020-05-04
+    <div style="text-align: center">
+        <p>
+            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
         </p>
     </div>
 </div>

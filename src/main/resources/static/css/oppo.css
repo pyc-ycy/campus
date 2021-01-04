@@ -29,11 +29,11 @@ a{
     width: 100%;
     /*border: 1px solid #000;*/
 }
-.container{
+/*.container{
     width: 1280px;
-    /*border: 1px solid #f00;*/
+    !*border: 1px solid #f00;*!
     margin: 0 auto;
-}
+}*/
 
 /*设置页面顶部的样式*/
 #top{

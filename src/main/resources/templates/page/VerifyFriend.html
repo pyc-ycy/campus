@@ -123,17 +123,17 @@
     <div class="row">
         <div class="col-sm-4">
             <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">信息查看</a> </li>
+                <li><a href="/userCenter">信息查看</a> </li>
                 <li><a href="/updateUserInfo" target="_blank">更新信息</a></li>
                 <li><a href="/sign" target="_blank">注册</a></li>
                 <li><a href="/toChangePWD" target="_blank">修改密码</a></li>
-                <li><a href="/toQueryGrade" target="">查看课程成绩</a> </li>
-                <li><a href="/toUpQuestion" target="">申请问题悬赏</a> </li>
+                <li><a href="/toQueryGrade" target="_blank">查看课程成绩</a> </li>
+                <li><a href="/toUpQuestion" target="_blank">申请问题悬赏</a> </li>
                 <li><a href="/toBrowserQuestion" target="_blank">浏览悬赏问题</a> </li>
                 <li><a href="/publicChatRoom" target="_blank">公共聊天室</a> </li>
                 <li><a href="/toAddFriend">添加好友</a> </li>
                 <li><a href="/toMyFriend">我的好友</a> </li>
-                <li><a href="/toVerifyFriend">好友申请验证</a> </li>
+                <li class="active"><a href="/toVerifyFriend">好友申请验证</a> </li>
             </ul>
             <hr class="hidden-sm hidden-md hidden-lg">
         </div>
@@ -147,7 +147,7 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">好友申请待验证</h3>
                     </div>
-                    <div class="panel-body">
+                    <div class="panel-body" style="height: 300px;overflow: auto;">
                         <ul class="list-group" th:if="${not #lists.isEmpty(fl)}">
                             <li class="list-group-item list-group-item-info" th:each="TFL:${fl}">
                                 <!--/*@thymesVar id="getFromName" type="com.pyc.campus.domain.FriendList"*/-->
@@ -180,6 +180,51 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">联系方式</a></li>
+                        <li><a href="#" style="font-size: larger">15014366986</a></li>
+                        <li><a href="#" style="font-size: larger">2923616405</a></li>
+                        <li><a href="#" style="font-size: larger">pyc852164</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">关于我</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42896653"
+                               target="_blank" style="font-size: larger">
+                            CSDN:我的关于计算机学习的博客地址
+                        </a></li>
+                        <li><a href="https://github.com/pyc-ycy"
+                               target="_blank" style="font-size: larger">
+                            Github：编程学习项目源代码托管仓库地址
+                        </a></li>
+                        <li><a href="https://gitee.com/pengyoucongcode"
+                               target="_blank" style="font-size: larger">
+                            Gitee：学习项目源代码托管地址
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li style="font-size: larger">关于我</li>
+                        <li style="font-size: larger">我的博客文章，主要是计算机学习方面</li>
+                        <li style="font-size: larger">我的代码托管平台，以C++和Java为主</li>
+                        <li style="font-size: larger">也是代码托管平台，以C++和Java为主</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 <script type="text/javascript">
     function check(value) {
@@ -188,51 +233,14 @@
         return false;
     }
 </script>
-<div id="after_sale">
-    <div class="container">
-        <ul>
-            <li>
-                <ol>
-                    <li><a href="#">联系方式</a></li>
-                    <li><a href="#">15014366986</a></li>
-                    <li><a href="#">2923616405</a></li>
-                    <li><a href="#">pyc852164</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li><a href="#">关于我</a></li>
-                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
-                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
-                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>我的博客文章，</li>
-                    <li>我的代码托管平台，</li>
-                    <li>也是代码托管平台，</li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>可以了解我的所学</li>
-                    <li>可以看到我的开源代码</li>
-                    <li>为避免Github访问不了</li>
-                </ol>
-            </li>
-        </ul>
+
+    <div id="footer">
+        <div style="text-align: center">
+            <p>
+                <span>@2020 御承扬Copyright&copy;2020-05-04</span>
+            </p>
+        </div>
     </div>
-</div>
-<div id="footer">
-    <div class="container">
-        <p style="color: white;text-align: center;">
-            @2020 御承扬Copyright&copy;2020-05-04
-        </p>
-    </div>
-</div>
 <div id="scroll">
     <div class="scrollItem" id="toTop">顶部</div>
     <div class="scrollItem" id="toBottom">底部</div>

@@ -58,13 +58,7 @@
             padding: 0;
             background: #eee url("../../static/images/campus/logo.jpg") center no-repeat fixed;
         }
-        .main{
-            margin: 10px auto;
-            width: 800px;
-            height: auto;
-        }
         .form-box{
-            margin: 100px auto;
             width: 500px;
             height: auto;
         }
@@ -76,9 +70,9 @@
 </head>
 <body>
 <!--页面顶部-->
-<div id="top">
+<!--<div id="top">
     <div class="container"></div>
-</div>
+</div>-->
 <!-- 页面的头部 -->
 <div id="header">
     <div class="container">
@@ -126,113 +120,133 @@
         </ul>
     </div>
 </div>
-<div class="main">
-    <h1>成绩导入</h1>
-    <div class="starter-template">
-        <h1 th:text="${msg.title}"></h1>
-        <p class="bg-primary" th:text="${msg.content}"></p>
-    </div>
-    <div class="form-box">
-        <form class="form-horizontal" method="post" th:action="@{saveGrade}" action="/saveGrade" name="form">
-            <div class="form-group">
-                <label for="inputTerm" class="col-sm-2 control-label">学年学期</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputTerm" name="term" placeholder="2020-2021-1">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h2>网站管理菜单</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="/publishNews">新闻发布</a> </li>
+                <li class="active"><a href="/toImportGrade">成绩导入</a> </li>
+                <li><a href="/toPublishQuestion">发布悬赏问题</a> </li>
+                <li><a href="/manageUser">管理用户</a> </li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
+        </div>
+        <div class="col-md-8">
+            <h1>成绩导入</h1>
+            <div class="starter-template">
+                <h1 th:text="${msg.title}"></h1>
+                <p class="bg-primary" th:text="${msg.content}"></p>
+            </div>
+            <div class="form-box">
+                <form class="form-horizontal" method="post" th:action="@{saveGrade}" action="/saveGrade" name="form">
+                    <div class="form-group">
+                        <label for="inputTerm" class="col-sm-2 control-label">学年学期</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputTerm" name="term" placeholder="2020-2021-1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCourseCode" class="col-sm-2 control-label">课程编号</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCourseCode" name="courseCode" placeholder="123456">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCourseName" class="col-sm-2 control-label">课程名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCourseName" name="courseName" placeholder="课程名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputCredit" class="col-sm-2 control-label">课程学分</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCredit" name="credit" placeholder="学分">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputGPA" class="col-sm-2 control-label">成绩绩点</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputGPA" name="GPA" placeholder="绩点">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLearnHour" class="col-sm-2 control-label">课程学时</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputLearnHour" name="LearnHour" placeholder="学时">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputGrade" class="col-sm-2 control-label">学生成绩</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputGrade" name="StudentGrade" placeholder="成绩">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputName" class="col-sm-2 control-label">学生姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName" name="studentName" placeholder="学生姓名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputStudentID" class="col-sm-2 control-label">学生学号</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputStudentID" name="studentID" placeholder="11位学号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-default">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">联系方式</a></li>
+                        <li><a href="#" style="font-size: larger">15014366986</a></li>
+                        <li><a href="#" style="font-size: larger">2923616405</a></li>
+                        <li><a href="#" style="font-size: larger">pyc852164</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputCourseCode" class="col-sm-2 control-label">课程编号</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCourseCode" name="courseCode" placeholder="123456">
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">关于我</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42896653"
+                               target="_blank" style="font-size: larger">
+                            CSDN:我的关于计算机学习的博客地址
+                        </a></li>
+                        <li><a href="https://github.com/pyc-ycy"
+                               target="_blank" style="font-size: larger">
+                            Github：编程学习项目源代码托管仓库地址
+                        </a></li>
+                        <li><a href="https://gitee.com/pengyoucongcode"
+                               target="_blank" style="font-size: larger">
+                            Gitee：学习项目源代码托管地址
+                        </a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputCourseName" class="col-sm-2 control-label">课程名称</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCourseName" name="courseName" placeholder="课程名称">
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li style="font-size: larger">关于我</li>
+                        <li style="font-size: larger">我的博客文章，主要是计算机学习方面</li>
+                        <li style="font-size: larger">我的代码托管平台，以C++和Java为主</li>
+                        <li style="font-size: larger">也是代码托管平台，以C++和Java为主</li>
+                    </ul>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="inputCredit" class="col-sm-2 control-label">课程学分</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputCredit" name="credit" placeholder="学分">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputGPA" class="col-sm-2 control-label">成绩绩点</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputGPA" name="GPA" placeholder="绩点">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputLearnHour" class="col-sm-2 control-label">课程学时</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputLearnHour" name="LearnHour" placeholder="学时">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputGrade" class="col-sm-2 control-label">学生成绩</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputGrade" name="StudentGrade" placeholder="成绩">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">学生姓名</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputName" name="studentName" placeholder="学生姓名">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputStudentID" class="col-sm-2 control-label">学生学号</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputStudentID" name="studentID" placeholder="11位学号">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default">保存</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="after_sale">
-    <div class="container">
-        <ul>
-            <li>
-                <ol>
-                    <li><a href="#">联系方式</a></li>
-                    <li><a href="#">15014366986</a></li>
-                    <li><a href="#">2923616405</a></li>
-                    <li><a href="#">pyc852164</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li><a href="#">关于我</a></li>
-                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
-                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
-                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>我的博客文章，</li>
-                    <li>我的代码托管平台，</li>
-                    <li>也是代码托管平台，</li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>可以了解我的所学</li>
-                    <li>可以看到我的开源代码</li>
-                    <li>为避免Github访问不了</li>
-                </ol>
-            </li>
-        </ul>
+        </div>
     </div>
 </div>
 <div id="scroll">
@@ -240,9 +254,9 @@
     <div class="scrollItem" id="toBottom">底部</div>
 </div>
 <div id="footer">
-    <div class="container">
-        <p style="color: white;text-align: center;">
-            @2020 御承扬Copyright&copy;2020-05-04
+    <div style="text-align: center">
+        <p>
+            <span>@2020 御承扬Copyright&copy;2020-05-04</span>
         </p>
     </div>
 </div>

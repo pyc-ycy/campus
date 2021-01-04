@@ -6,9 +6,19 @@
     <link rel="stylesheet" type="text/css" href="../../static/css/swiper.css">
     <link rel="stylesheet" type="text/css" href="../../static/css/animate.min.css">
     <link rel="stylesheet" type="text/css" href="../../static/css/oppo.css">
-    <script type="text/javascript" src="../../static/js/jquery-1.11.3.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+          crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <!--<script src="http://www.jq22.com/jquery/1.7.2/jquery.min.js"></script>-->
     <script type="text/javascript">
         $(function () {
@@ -71,47 +81,7 @@
             -webkit-align-items: center;
             align-items: center;
         }
-        #content{
-            margin: 10px auto;
-            height: auto;
-        }
-        .title{
-            margin: 0 auto;
-            padding-top: 5px;
-            text-align: center;
-            height: 30px;
-            font-size: 25px;
-        }
-        .basic-info{
-            margin: 0 auto;
-            padding-top: 5px;
-            width: 100%;
-        }
-        .basic-info .left{
-            float: left;
-            margin-left: 10px;
-            width: 25%;
-            height: 100%;
-            background-color: #fff;
-        }
-        .basic-info .left p{
-            font-size: 18px;
-            color: #36434b;
-        }
-        .basic-info .right{
-            float: left;
-            margin-left: 50px;
-            width: 50%;
-            height: 100%;
-        }
-        .basic-info .right p{
-            font-size: 16px;
-            text-indent: 2em;
-            color: #36434b;
-            line-height: 25px;
-        }
         .pic-list{
-            margin-top: 40%;
             width: 100%;
             height: 400px;
             /*background-color: gold;*/
@@ -126,9 +96,9 @@
 </head>
 <body style="word-break:break-all;">
 <!--页面顶部-->
-<div id="top">
+<!--<div id="top">
     <div class="container"></div>
-</div>
+</div>-->
 <!-- 页面的头部 -->
 <div id="header">
     <div class="container">
@@ -192,24 +162,23 @@
     </div>
     <div class="banner-nav-bg"></div>
 </div>
-<div id="content">
-    <div class="title">
-        <h1 style="font-size: 25px;">学校简介</h1>
-    </div>
-    <div class="basic-info">
-        <div class="left">
-            <img src="images/campus/logo.jpg" width="300" height="200" alt="pic">
-            <p>全称：肇庆学院</p>
-            <p>简称：砚园</p>
-            <p>校训：<strong>厚德、明智、博学、力行</strong></p>
-            <p>类别：公立大学</p>
-            <p>类型：综合类</p>
-            <p>属性：全日制普通本科院校</p>
-            <p>联系电话：联系电话</p>
-            <p>电子邮箱：电子邮箱</p>
-            <p>地理位置：广东省肇庆市端州区迎宾大道横岗街道肇庆学院（主校区）</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>学校属性</h3>
+            <ul class="nav nav-pills nav-stacked">
+                <li><img src="images/campus/logo.jpg" width="300" height="200" alt="pic"></li>
+                <li>全称：肇庆学院</li>
+                <li>简称：砚园</li>
+                <li>校训：<strong>厚德、明智、博学、力行</strong></li>
+                <li>类别：公立大学 </li>
+                <li>类型综合类</li>
+                <li>属性：普通全日制本科大学</li>
+                <li>地理位置：广东省肇庆市端州区迎宾大道横岗街道肇庆学院（主校区）</li>
+            </ul>
+            <hr class="hidden-sm hidden-md hidden-lg">
         </div>
-        <div class="right">
+        <div class="col-md-8">
             <h2 style="font-size: 17px;">基本信息</h2>
             <br>
             <p style="text-indent: 2em;">
@@ -237,55 +206,62 @@
                 砚园有图书馆两处，其中福慧图书馆是学校师生常去的地方，另一处图书馆为馆藏备份和校史档案管理等用，师生不常去。
                 砚园内学习氛围好，学生自觉于校园内各处可学习处学习，树荫下小亭子，湖边阴凉处，图书馆内，教室内……凡可静心学习处皆有捧书人。
             </p>
+            <div class="pic-list">
+                <div>
+                    <img src="images/campus/mmexport1576931950622.jpg" alt="pic" style="width: 350px">
+                    <img src="images/campus/mmexport1576931943913.jpg" alt="pic" style="width: 350px">
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="pic-list">
-        <div style="margin: 5px 5%">
-            <img src="images/campus/mmexport1576931950622.jpg" alt="pic" style="width: 512px">
-            <img src="images/campus/mmexport1576931943913.jpg" alt="pic" style="width: 512px">
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">联系方式</a></li>
+                        <li><a href="#" style="font-size: larger">15014366986</a></li>
+                        <li><a href="#" style="font-size: larger">2923616405</a></li>
+                        <li><a href="#" style="font-size: larger">pyc852164</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<div id="after_sale">
-    <div class="container">
-        <ul>
-            <li>
-                <ol>
-                    <li><a href="#">联系方式</a></li>
-                    <li><a href="#">15014366986</a></li>
-                    <li><a href="#">2923616405</a></li>
-                    <li><a href="#">pyc852164</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li><a href="#">关于我</a></li>
-                    <li><a href="https://blog.csdn.net/qq_42896653">CSDN</a></li>
-                    <li><a href="https://github.com/pyc-ycy">Github</a></li>
-                    <li><a href="https://gitee.com/pengyoucongcode">Gitee</a></li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>我的博客文章，</li>
-                    <li>我的代码托管平台，</li>
-                    <li>也是代码托管平台，</li>
-                </ol>
-            </li>
-            <li>
-                <ol>
-                    <li>关于我</li>
-                    <li>可以了解我的所学</li>
-                    <li>可以看到我的开源代码</li>
-                    <li>为避免Github访问不了</li>
-                </ol>
-            </li>
-        </ul>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li><a href="#" style="font-size: larger">关于我</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42896653"
+                               target="_blank" style="font-size: larger">
+                            CSDN:我的关于计算机学习的博客地址
+                        </a></li>
+                        <li><a href="https://github.com/pyc-ycy"
+                               target="_blank" style="font-size: larger">
+                            Github：编程学习项目源代码托管仓库地址
+                        </a></li>
+                        <li><a href="https://gitee.com/pengyoucongcode"
+                               target="_blank" style="font-size: larger">
+                            Gitee：学习项目源代码托管地址
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <ul>
+                        <li style="font-size: larger">关于我</li>
+                        <li style="font-size: larger">我的博客文章，主要是计算机学习方面</li>
+                        <li style="font-size: larger">我的代码托管平台，以C++和Java为主</li>
+                        <li style="font-size: larger">也是代码托管平台，以C++和Java为主</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div id="footer">
-    <div class="container">
+    <div style="text-align: center">
         <p>
             <span>@2020 御承扬Copyright&copy;2020-05-04</span>
         </p>
