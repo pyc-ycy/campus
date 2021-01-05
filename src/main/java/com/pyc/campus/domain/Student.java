@@ -23,6 +23,7 @@ public class Student {
     private String QQ;
     private int admin;
     private boolean onlineStatus;
+    private boolean frozen;
 
     public Student() {
         super();
@@ -37,6 +38,15 @@ public class Student {
         this.QQ = QQ;
         this.admin = admin;
         this.onlineStatus=false;
+        this.frozen=false;
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
+    }
+
+    public boolean isFrozen() {
+        return frozen;
     }
 
     public void setAdmin(int admin) {

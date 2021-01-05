@@ -371,7 +371,76 @@ public class WebController {
         model.addAttribute("msg",msg);
         return "page/Login";
     }
+    @RequestMapping("/toCheckFrozen")
+    public String toCheckFrozen(Model model)
+    {
+        Msg msg = new Msg("提示","在登陆之前先输入学号确认是否处于冻结状态","");
+        model.addAttribute("msg",msg);
+        return "page/CheckFrozen";
+    }
+    @RequestMapping("/checkFrozen")
+    public String checkFrozen(Model model,@Param("studentID")String studentID)
+    {
+        Student s = studentRepository.findAllByStudentID(studentID);
+        if(s!=null) {
+            boolean t = studentRepository.findFrozenByStudentID(studentID);
+            if (t) {
+                Msg msg = new Msg("提示", "你的账号处于冻结状态", "");
+                model.addAttribute("msg", msg);
+                return "page/CheckFrozen";
+            }
+            Msg msg = new Msg("欢迎登录", "请输入你的注册学号和对应的密码", "");
+            model.addAttribute("msg", msg);
+            return "page/Login";
+        }
+        Msg msg = new Msg("提示", "该账号未注册！", "");
+        model.addAttribute("msg", msg);
+        return "page/CheckFrozen";
+    }
+    @RequestMapping("/saveFrozenInTrue")
+    public String saveFrozenInTrue(Model model,HttpSession session,
+                                   @RequestParam(value = "studentId", required = false)String studentID){
+        boolean frozen=true;
+        System.out.println(studentID+" "+frozen);
+        int t = studentRepository.saveFrozen(frozen,studentID);
+        if(t!=0){
+            System.out.println("更新成功！");
+        }
+        else
+        {
+            System.out.println("更新失败！");
+        }
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Student> students = studentRepository.findAll();
+        model.addAttribute("students", students);
+        return "page/ManageUser";
 
+    }
+    @RequestMapping("/saveFrozenInFalse")
+    public String saveFrozenInFalse(Model model,HttpSession session,
+                                    @RequestParam(value = "studentId", required = false)String studentID){
+        boolean frozen=false;
+        System.out.println(studentID+" "+frozen);
+        int t = studentRepository.saveFrozen(frozen,studentID);
+        if(t!=0){
+            System.out.println("更新成功！");
+        }
+        else
+        {
+            System.out.println("更新失败！");
+        }
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        List<Student> students = studentRepository.findAll();
+        model.addAttribute("students", students);
+        return "page/ManageUser";
+
+    }
     @RequestMapping("/sign")
     public String sign(Model model) {
         Msg msg = new Msg("欢迎注册","请输入你的学号和对应的密码以及其他相关信息","");
@@ -533,7 +602,7 @@ public class WebController {
             return "page/UpQuestion";
         }
     }
-    @RequestMapping("feedback")
+    @RequestMapping("/feedback")
     public String feedback(Model model, HttpSession session,
                            @Param("mail")String mail, @Param("name")String name,
                            @Param("title")String title, @Param("content")String content){

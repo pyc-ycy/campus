@@ -19,6 +19,12 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     Student findPasswordByStudentID(String studentID);
     Student findNameByStudentID(String studentID);
     Student findAllByStudentID(String studentID);
+    @Query("select s.frozen from Student s where s.studentID=?1")
+    Boolean findFrozenByStudentID(String studentID);
+    @Modifying
+    @Transactional
+    @Query("update Student s set s.frozen=?1 where s.studentID=?2")
+    int saveFrozen(Boolean frozen,String studentID);
     @Modifying
     @Transactional
     @Query("update Student s set s.name=?1,s.weChat=?2, s.QQ=?3 where s.studentID=?4")

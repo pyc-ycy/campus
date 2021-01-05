@@ -149,15 +149,17 @@
                         <th>QQ</th>
                         <th>微信</th>
                         <th>是否管理员</th>
+                        <th>是否冻结</th>
                     </tr>
                     </thead>
                     <tbody th:if="${not #lists.isEmpty(students)}">
                     <tr th:each="student:${students}">
-                        <td th:text="${student.name}"></td>
-                        <td th:text="${student.studentID}"></td>
-                        <td th:text="${student.QQ}"></td>
-                        <td th:text="${student.weChat}"></td>
-                        <td th:text="${student.admin}"></td>
+                        <td th:text="${student.getName()}"></td>
+                        <td th:text="${student.getStudentID()}"></td>
+                        <td th:text="${student.getQQ()}"></td>
+                        <td th:text="${student.getWeChat()}"></td>
+                        <td th:text="${student.getAdmin()}"></td>
+                        <td th:text="${student.isFrozen()}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -169,7 +171,24 @@
                 </div>
                 <button type="submit" class="btn btn-danger">删除</button>
             </form>
-        </div>
+            <br>
+            <form class="form-inline" name="form3" method="post"
+                  th:action="@{/saveFrozenInTrue}" action="/saveFrozenInTrue">
+                <div class="form-group">
+                    <label for="studentId2">学号</label>
+                    <input type="text" class="form-control" id="studentId2" name="studentId" placeholder="student id">
+                </div>
+                <button type="submit" class="btn btn-danger">冻结</button>
+            </form>
+            <br>
+            <form class="form-inline" name="form2" method="post"
+                  th:action="@{/saveFrozenInFalse}" action="/saveFrozenInFalse">
+                <div class="form-group">
+                    <label for="studentId3">学号</label>
+                    <input type="text" class="form-control" id="studentId3" name="studentId" placeholder="student id">
+                </div>
+                <button type="submit" class="btn btn-danger">解冻</button>
+            </form>
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
                 <div class="caption">
