@@ -31,6 +31,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.sessionManagement()
+                .maximumSessions(1).maxSessionsPreventsLogin(true);
         http.authorizeRequests()
                 .antMatchers("/campus").permitAll()
                 .antMatchers("/aboutLearn").permitAll()
@@ -52,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/campus")
+                .logoutSuccessUrl("/campus").invalidateHttpSession(true)
                 .permitAll();
     }
 
