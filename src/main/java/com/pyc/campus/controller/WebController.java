@@ -361,7 +361,7 @@ public class WebController {
     }
 //@RequestMapping("/")
     @RequestMapping("/campus")
-    public String oppo() {
+    public String campus() {
         return "page/Index";
     }
 

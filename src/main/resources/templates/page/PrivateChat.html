@@ -83,7 +83,6 @@
         let str="<div class=\"right_d\"><div class=\"speech right\" ng-class=\"speech right\">"+message.body+"</div></div>";
         $('#output').append(str);
         console.log(str);
-        /*$('#output').append("</br><b>"+[[${toName}]]+":"+message.body+"</b></br>")*/
     }
     function sendSpittle(text) {
         stomp.send("/chat/"+[[${toName}]],{},text);

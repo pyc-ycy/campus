@@ -10,7 +10,6 @@ package com.pyc.campus.controller;
 import com.pyc.campus.domain.PublishMessage;
 import com.pyc.campus.domain.ResponseMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

@@ -10,10 +10,10 @@ package com.pyc.campus.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class WebMVCConfig extends WebMvcConfigurerAdapter {
+public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
@@ -21,8 +21,6 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/login").setViewName("page/Login");
-//        registry.addViewController("/home").setViewName("page/Home");
         registry.addViewController("/aboutLearn").setViewName("page/AboutLearn");
         registry.addViewController("/aboutEnglish").setViewName("page/AboutEnglish");
         registry.addViewController("/aboutMath").setViewName("page/AboutMath");
