@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -339,7 +340,9 @@ public class WebController {
                          @RequestParam(value = "QQ", required = false) String qq) {
         Student student = studentRepository.findPasswordByStudentID(studentID);
         if (student != null) {
-            return "page/SignError";
+            Msg msg = new Msg("注册结果","错误，"+studentID+",已被注册，请联系管理员进行解决","额外信息");
+            model.addAttribute("msg",msg);
+            return "page/Sign";
         }
         Msg msg = new Msg("注册结果","恭喜"+studentID+",你成功注册，请使用刚刚注册的学号和密码进行登录","额外信息");
         Student s = new Student(username, studentID, password, weChat, qq,0);

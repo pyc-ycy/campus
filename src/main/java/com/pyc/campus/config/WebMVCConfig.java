@@ -27,5 +27,6 @@ public class WebMVCConfig implements WebMvcConfigurer {
         registry.addViewController("/aboutPhilosophy").setViewName("page/AboutPhilosophy");
         registry.addViewController("/publicChatRoom").setViewName("PublicChatRoom");
         registry.addViewController("/chat").setViewName("page/PrivateChat");
+        registry.addViewController("/signError").setViewName("page/SignError");
     }
 }

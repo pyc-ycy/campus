@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/aboutMath").permitAll()
                 .antMatchers("/aboutPhilosophy").permitAll()
                 .antMatchers("/sign").permitAll()
+                .antMatchers("/sign?**").permitAll()
                 .antMatchers("/toCheckFrozen").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/static/**/**").permitAll()
