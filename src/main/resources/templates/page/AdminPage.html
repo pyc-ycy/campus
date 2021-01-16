@@ -83,36 +83,46 @@
     </div>
 </div>
 <!-- 页面的导航 -->
-<div id="nav">
-    <div class="container">
-        <div class="logo left">
-            <h1>Campus</h1>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/home">Campus</a>
         </div>
-        <ul>
-            <li><a href="/home">Home</a></li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="/learn">
-                    学习中心<span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="/learn">编程学习</a></li>
-                    <li><a href="/toEnglish">英语</a></li>
-                    <li><a href="/toMath">数学</a></li>
-                    <li class="divider"></li>
-                    <li><a href="/toPhilosophy">哲学</a></li>
-                </ul>
-            </li>
-            <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red">用户中心</a>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" >用户中心</a>
-            </li>
-            <li><a href="/toHelp">帮助中心</a> </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li><a href="/home">Home</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="/aboutLearn">
+                        学习中心<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/learn">编程学习</a></li>
+                        <li><a href="/toEnglish">英语</a></li>
+                        <li><a href="/toMath">数学</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/toPhilosophy">哲学</a></li>
+                    </ul>
+                </li>
+                <li><a href="/news">校内新闻</a></li>
+                <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: green">用户中心</a></li>
+                <li class="active" sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin">网站管理</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red">用户中心</a></li>
+                <li><a href="/toHelp">帮助中心</a> </li>
+            </ul>
+        </div>
     </div>
-</div>
-<div class="container" style="margin-bottom: 10%">
+</nav>
+<div class="container" style="margin-bottom: 10%;margin-top: 5%">
     <div class="row">
         <div class="col-sm-4">
             <h2>网站管理菜单</h2>
