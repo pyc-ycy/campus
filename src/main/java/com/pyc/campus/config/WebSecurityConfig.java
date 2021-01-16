@@ -43,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/sign?**").permitAll()
                 .antMatchers("/toCheckFrozen").permitAll()
                 .antMatchers("/static/**").permitAll()
+                .antMatchers("/static/css/bootstrap.min.css").permitAll()
+                .antMatchers("/static/js/bootstrap.min.js").permitAll()
                 .antMatchers("/static/**/**").permitAll()
                 .antMatchers("/static/**/**/**").permitAll()
                 .antMatchers("/images/**/**").permitAll()
