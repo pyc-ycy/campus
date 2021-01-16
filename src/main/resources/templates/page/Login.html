@@ -20,7 +20,7 @@
 </head>
 <body>
 <div style="margin: 5% 25%">
-    <p th:if="${param.error}" class="bg-danger">有错误，请重试！</p>
+    <p th:if="${param.error}" class="bg-danger">账号处于冻结状态或用户名未注册</p>
     <div class="starter-template">
         <h1 th:text="${msg.title}"></h1>
         <p class="bg-primary" th:text="${msg.content}"></p>
