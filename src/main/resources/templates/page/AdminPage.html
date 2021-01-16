@@ -103,10 +103,10 @@
                 </ul>
             </li>
             <li><a href="/news">校内新闻</a></li>
-            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_USER')"><a href="/userCenter" style="color: red">用户中心</a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="#">网站管理</a></li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" th:text="${curUse.getName()}"></a>
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/userCenter" style="color: red" >用户中心</a>
             </li>
             <li><a href="/toHelp">帮助中心</a> </li>
         </ul>
@@ -117,7 +117,7 @@
         <div class="col-sm-4">
             <h2>网站管理菜单</h2>
             <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="/publishNews">新闻发布</a> </li>
+                <li><a href="/publishNews">新闻发布</a> </li>
                 <li><a href="/toImportGrade">成绩导入</a> </li>
                 <li><a href="/toPublishQuestion">发布悬赏问题</a> </li>
                 <li><a href="/manageUser">管理用户</a> </li>

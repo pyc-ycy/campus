@@ -56,15 +56,10 @@ public class WebController {
                 ""
         );
         model.addAttribute("msg", msg);
-        model.addAttribute("curUse",s);
         return "page/Home";
     }
     @RequestMapping("/learn")
     public String learn(Model model,HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         return "page/Learn";
     }
     @RequestMapping("/userCenter")
@@ -80,44 +75,24 @@ public class WebController {
     @RequestMapping("/toAddFriend")
     public String toAddFriend(Model model, HttpSession session)
     {
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
         Msg msg = new Msg("注意","添加好友时请输入对方的学号，而不是姓名！","");
         model.addAttribute("msg",msg);
-        model.addAttribute("curUse",s);
         return "page/AddFriend";
     }
     @RequestMapping("/toHelp")
     public String toHelp(Model model, HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         return "page/Help";
     }
     @RequestMapping("/toEnglish")
     public String toEnglish(Model model,HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         return "page/English";
     }
     @RequestMapping("/toMath")
     public String toMath(Model model,HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         return "page/Math";
     }
     @RequestMapping("/toPhilosophy")
     public String toPhilosophy(Model model,HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         return "page/Philosophy";
     }
     @RequestMapping("/toMyFriend")
@@ -128,7 +103,6 @@ public class WebController {
         List<FriendList> tempFl = friendListRepository.toNameIsFalseByFromName(currentStudentId);
         List<FriendList> Fl = friendListRepository.findMyFriendsByFromName(currentStudentId);
         List<FriendList> Fl1 = friendListRepository.findMyFriendsByToName(currentStudentId);
-        model.addAttribute("curUse",s);
         model.addAttribute("tempFl",tempFl);
         model.addAttribute("Fl",Fl);
         model.addAttribute("Fl1",Fl1);
@@ -144,19 +118,14 @@ public class WebController {
         studentRepository.setOnlineStatus(onlineStatus,currentStudentId);
         Msg msg = new Msg("","","");
         model.addAttribute("msg",msg);
-        model.addAttribute("curUse",s);
         return "page/UserCenter";
     }
     @RequestMapping("/toBrowseFriendInfo")
     public String toBrowseFriendInfo(Model model, HttpSession session,
                                      @Param("toName")String toName){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
         Student stu = studentRepository.findNameByStudentID(toName);
         Msg msg = new Msg("","","");
         model.addAttribute("msg",msg);
-        model.addAttribute("curUse",s);
         model.addAttribute("stu",stu);
         return "page/BrowseFriendInfo";
     }
@@ -165,21 +134,16 @@ public class WebController {
                             @Param("fromName")String fromName,
                             @Param("toName")String toName){
         Student stu = studentRepository.findAllByStudentID(toName);
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
         if(stu==null)
         {
             Msg msg = new Msg("错误","你所添加的用户不存在,请检查输入是否错误","");
             model.addAttribute("msg",msg);
-            model.addAttribute("curUse",s);
             return "page/AddFriend";
         }
         FriendList fl = new FriendList(fromName,toName);
         friendListRepository.save(fl);
         Msg msg = new Msg("OK","请耐心等待对方通过申请","");
         model.addAttribute("msg",msg);
-        model.addAttribute("curUse",s);
         return "page/AddFriend";
     }
     @RequestMapping("/toVerifyFriend")
@@ -191,7 +155,6 @@ public class WebController {
         int len = fl.size();
         Msg msg = new Msg("待验证好友申请数量：", "一共"+len+"个","");
         model.addAttribute("msg",msg);
-        model.addAttribute("curUse",s);
         model.addAttribute("fl",fl);
         return "page/VerifyFriend";
     }
@@ -207,13 +170,11 @@ public class WebController {
         if(result!=0){
             Msg msg = new Msg("待验证好友申请数量：", "一共"+len+"个","");
             model.addAttribute("msg",msg);
-            model.addAttribute("curUse",s);
             model.addAttribute("fl",fl);
             return "page/VerifyFriend";
         }
         Msg msg = new Msg("错误：", "请检查输入的学号","");
         model.addAttribute("msg",msg);
-        model.addAttribute("curUse",s);
         model.addAttribute("fl",fl);
         return "page/VerifyFriend";
     }
@@ -413,10 +374,6 @@ public class WebController {
         {
             System.out.println("更新失败！");
         }
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Student> students = studentRepository.findAll();
         model.addAttribute("students", students);
         return "page/ManageUser";
@@ -435,10 +392,6 @@ public class WebController {
         {
             System.out.println("更新失败！");
         }
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Student> students = studentRepository.findAll();
         model.addAttribute("students", students);
         return "page/ManageUser";
@@ -455,10 +408,6 @@ public class WebController {
     @RequestMapping("/news")
     public String news(Model model,HttpSession session)
     {
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<News> news = newsRepository.findAll();
         model.addAttribute("news",news);
         return "page/BrowseNews";
@@ -504,8 +453,6 @@ public class WebController {
     public String toQueryGrade(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Grade> gradeList = gradeRepository.findAllByStudentID(currentStudentId);
         model.addAttribute("gradeItems", gradeList);
         return "page/QueryGrade";
@@ -515,16 +462,14 @@ public class WebController {
     public String queryByTerm(Model model, HttpSession session, @Param("term")String term){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Grade> gradeLists = gradeRepository.findAllByTermAndStudentID(term, currentStudentId);
         model.addAttribute("gradeItems", gradeLists);
         return "page/QueryGrade";
     }
-    @RequestMapping("/test")
+    /*@RequestMapping("/test")
     public List<Grade> test(@Param("stuId")String studentId) {
         return gradeRepository.findAllByStudentID(studentId);
-    }
+    }*/
     @RequestMapping("/toImportGrade")
     public String toImportGrade(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
@@ -558,20 +503,12 @@ public class WebController {
         g.setName(name);
         g.setStudentID(studentID);
         gradeRepository.save(g);
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         Msg msg = new Msg("提示","导入成功","");
         model.addAttribute("msg",msg);
         return "page/ImportGrade";
     }
     @RequestMapping("/toUpQuestion")
     public String toUpQuestion(Model model, HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         Msg msg = new Msg("","","");
         model.addAttribute("msg", msg);
         return "page/UpQuestion";
@@ -581,10 +518,6 @@ public class WebController {
     public String upQuestion(Model model, HttpSession session,
                              @Param("mail")String mail, @Param("name")String name,
                              @Param("title")String title, @Param("content")String content,@Param("reward")String reward){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         try{
             MailConfig mailConfig = new MailConfig();
             JavaMailSender sender = mailConfig.getMailSender();
@@ -609,10 +542,6 @@ public class WebController {
     public String feedback(Model model, HttpSession session,
                            @Param("mail")String mail, @Param("name")String name,
                            @Param("title")String title, @Param("content")String content){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         try{
             MailConfig mailConfig = new MailConfig();
             JavaMailSender sender = mailConfig.getMailSender();
@@ -635,20 +564,12 @@ public class WebController {
     }
     @RequestMapping("/toFeedBack")
     public String toFeedBack(Model model, HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         Msg msg = new Msg("","","");
         model.addAttribute("msg",msg);
         return "page/FeedBack";
     }
     @RequestMapping("/toPublishQuestion")
     public String toPublishQuestion(Model model,HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         Msg msg = new Msg("", "", "");
         model.addAttribute("msg", msg);
         return "page/PublishQuestion";
@@ -658,10 +579,6 @@ public class WebController {
                                   @Param("mail")String mail,
                                   @RequestParam(value = "PublisherName", required = false)String publisher,
                                   @RequestParam(value = "QuestionType", required = false)String type, @Param("content")String content, @Param("reward")String reward){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         try{
             Question question = new Question();
             question.setPublisher(publisher);
@@ -684,10 +601,6 @@ public class WebController {
     final QuestionRepository questionRepository;
     @RequestMapping("/toBrowserQuestion")
     public String toBrowserQuestion(Model model, HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Question> questions = questionRepository.findAll();
         model.addAttribute("questions", questions);
         return "page/BrowserQuestion";
@@ -695,20 +608,12 @@ public class WebController {
     @RequestMapping("/queryByQuestionType")
     public String queryByQuestionType(Model model, HttpSession session,
                                       @RequestParam(value = "TypeOfQuestion", required = false)String type){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Question> questions = questionRepository.findAllByType(type);
         model.addAttribute("questions", questions);
         return "page/BrowserQuestion";
     }
     @RequestMapping("/manageUser")
     public String findUserExceptCurUser(Model model,HttpSession session){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Student> students = studentRepository.findAll();
         model.addAttribute("students", students);
         return "page/ManageUser";
@@ -716,20 +621,12 @@ public class WebController {
     @RequestMapping("/findUserByStudentIDLike")
     public String findUserByStudentIDLike(Model model, HttpSession session,
                                            @RequestParam(value = "ClassPrefix", required = false)String classPrefix){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         List<Student> students = studentRepository.query01(classPrefix+'%');
         model.addAttribute("students", students);
         return "page/ManageUser";
     }
     @RequestMapping("/delStuByStuId")
     public String delStuByStuId(Model model,HttpSession session,@RequestParam(value = "studentId", required = false)String stuId){
-        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
-        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        Student s = studentRepository.findNameByStudentID(currentStudentId);
-        model.addAttribute("curUse",s);
         studentRepository.delByStudentID(stuId);
         sysUserRepository.delByUsername(stuId);
         List<Student> students = studentRepository.findAll();
