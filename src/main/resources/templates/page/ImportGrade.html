@@ -212,12 +212,15 @@
                 </form>
             </div>
             <h1>以CSV文件格式批量导入成绩</h1>
+            <h2>注意：要导入的数据以<strong>CSV</strong>文件格式进行组织，并且文件编码设置为<strong>UTF-8</strong>
+                ，否则导入到数据库中汉字数据类型将出现乱码。
+            </h2>
             <div class="form-box">
                 <form class="form-horizontal" method="post" action="/upload" th:action="@{/upload}" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="chooseFile" class="col-sm-2 control-label">文件：</label>
                         <div class="col-sm-10">
-                            <input type="file" id="chooseFile" name="file">
+                            <input type="file" class="form-control" id="chooseFile" name="file">
                         </div>
                     </div>
                     <div class="form-group">
