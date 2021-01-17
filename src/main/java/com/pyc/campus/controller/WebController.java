@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -184,6 +183,8 @@ public class WebController {
 
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student toUse = studentRepository.findNameByStudentID(toName);
+        model.addAttribute("curUser", toUse);
         boolean s;
         FriendList s1 = friendListRepository.getStatus(currentStudentId,toName);
         FriendList s2 = friendListRepository.getStatus(toName,currentStudentId);
@@ -419,6 +420,14 @@ public class WebController {
         Student s = studentRepository.findNameByStudentID(currentStudentId);
         model.addAttribute("curUse",s);
         return "page/AdminPage";
+    }
+    @RequestMapping("/publicChatRoom")
+    public String publicChatRoom(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        Student s = studentRepository.findNameByStudentID(currentStudentId);
+        model.addAttribute("curUse",s);
+        return "PublicChatRoom";
     }
     @RequestMapping("/publishNews")
     public String publishNews(Model model, HttpSession session){

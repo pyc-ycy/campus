@@ -53,7 +53,8 @@
             <div class="col-md-8" style="margin-left: 20%">
                 <form class="form-inline" id="chatForm" style="margin-bottom: 25%">
                     <div class="form-group">
-                        <label for="name">输入名字：</label><input type="text" name="name" id="name" />
+                        <label for="name">聊天用名：</label><input type="text" name="name" id="name"
+                                                              th:value="${curUse.getName()}" readonly="readonly"/>
                         <label for="text">输入框：</label>
                         <input type="text" name="text" class="form-control" id="text" placeholder="输入要发送的信息">
                     </div>

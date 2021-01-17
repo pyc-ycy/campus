@@ -19,6 +19,17 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <!--文件上传依赖-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.3</version>
+        </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
@@ -77,6 +88,21 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.19</version>
         </dependency>
+        <!--批处理依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -123,6 +149,7 @@
                     <include>**/*.svg</include>
                     <include>**/*.ttf</include>
                     <include>**/*.woff</include>
+                    <include>**/*.ico</include>
                 </includes>
             </resource>
         </resources>
