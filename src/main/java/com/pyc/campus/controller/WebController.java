@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -44,6 +45,38 @@ public class WebController {
         this.friendListRepository=friendListRepository;
     }
 
+    @RequestMapping("/desc")
+    public String desc(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        List<Grade> gradeListDesc = gradeRepository.findAllByStudentIDOrderByGradeDesc(currentStudentId);
+        int minGrade = gradeRepository.findMinGrade(currentStudentId);
+        int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
+        int sumCredit = gradeRepository.findSumCredit(currentStudentId);
+        float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
+        model.addAttribute("minGrade", minGrade);
+        model.addAttribute("maxGrade", maxGrade);
+        model.addAttribute("sumCredit", sumCredit);
+        model.addAttribute("avgGPA",avgGPA);
+        model.addAttribute("gradeItems", gradeListDesc);
+        return "page/QueryGrade";
+    }
+    @RequestMapping("/asc")
+    public String asc(Model model, HttpSession session){
+        SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
+        String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        List<Grade> gradeListAsc = gradeRepository.findAllByStudentIDOrderByGradeAsc(currentStudentId);
+        int minGrade = gradeRepository.findMinGrade(currentStudentId);
+        int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
+        int sumCredit = gradeRepository.findSumCredit(currentStudentId);
+        float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
+        model.addAttribute("minGrade", minGrade);
+        model.addAttribute("maxGrade", maxGrade);
+        model.addAttribute("sumCredit", sumCredit);
+        model.addAttribute("avgGPA",avgGPA);
+        model.addAttribute("gradeItems", gradeListAsc);
+        return "page/QueryGrade";
+    }
     @RequestMapping("/home")
     public String home(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
@@ -463,6 +496,14 @@ public class WebController {
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         List<Grade> gradeList = gradeRepository.findAllByStudentID(currentStudentId);
+        int minGrade = gradeRepository.findMinGrade(currentStudentId);
+        int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
+        int sumCredit = gradeRepository.findSumCredit(currentStudentId);
+        float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
+        model.addAttribute("minGrade", minGrade);
+        model.addAttribute("maxGrade", maxGrade);
+        model.addAttribute("sumCredit", sumCredit);
+        model.addAttribute("avgGPA",avgGPA);
         model.addAttribute("gradeItems", gradeList);
         return "page/QueryGrade";
     }
