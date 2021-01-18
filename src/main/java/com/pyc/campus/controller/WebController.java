@@ -7,6 +7,7 @@
 
 package com.pyc.campus.controller;
 
+import com.pyc.campus.bean.OptPassword;
 import com.pyc.campus.config.MailConfig;
 import com.pyc.campus.dao.*;
 import com.pyc.campus.domain.*;
@@ -33,18 +34,51 @@ public class WebController {
     final
     SysUserRepository sysUserRepository;
     final FriendListRepository friendListRepository;
+    final SaveUserPasswordEncodeRepository saveUserPasswordEncodeRepository;
     public WebController(StudentRepository studentRepository, SysUserRepository sysUserRepository,
                          NewsRepository newsRepository, GradeRepository gradeRepository,
                          QuestionRepository questionRepository,
-                         FriendListRepository friendListRepository) {
+                         FriendListRepository friendListRepository,
+                         SaveUserPasswordEncodeRepository saveUserPasswordEncodeRepository) {
         this.studentRepository = studentRepository;
         this.sysUserRepository = sysUserRepository;
         this.newsRepository = newsRepository;
         this.gradeRepository = gradeRepository;
         this.questionRepository = questionRepository;
         this.friendListRepository=friendListRepository;
+        this.saveUserPasswordEncodeRepository = saveUserPasswordEncodeRepository;
     }
+    @RequestMapping("toCheckPassword")
+    public String toCheckPassword(Model model){
+        Msg msg = new Msg("提示","请先进行密码验证","");
+        model.addAttribute("msg",msg);
+        return "page/CheckPassword";
+    }
+    @RequestMapping("/my/check")
+    public String checkPassword(Model model,
+                                @RequestParam("stuID")String stuID,
+                                @RequestParam("password")String password){
+        SaveUserPasswordEncode sp = saveUserPasswordEncodeRepository.findAllByStuID(stuID);
+        String decodePassword = "";
+        try{
+            OptPassword op = new OptPassword();
+            decodePassword = op.decrypt(sp.getEncodePassword());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println(stuID + ", " + password + ", " + decodePassword);
+        Msg msg;
+        if(decodePassword.equals(password)){
+            msg = new Msg("提示","密码校验正确，请重新输入并单击登陆按钮进行登陆","");
+            model.addAttribute("msg",msg);
+            return "page/Login";
+        }else {
+            msg = new Msg("提示","密码校验错误！","");
+            model.addAttribute("msg",msg);
+            return "page/CheckPassword";
+        }
 
+    }
     @RequestMapping("/desc")
     public String desc(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
@@ -341,6 +375,15 @@ public class WebController {
         }
         Msg msg = new Msg("注册结果","恭喜"+studentID+",你成功注册，请使用刚刚注册的学号和密码进行登录","额外信息");
         Student s = new Student(username, studentID, password, weChat, qq,0);
+        String encodePassword = "";
+        try{
+            OptPassword op = new OptPassword();
+            encodePassword = op.encrypt(password);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        SaveUserPasswordEncode sp = new SaveUserPasswordEncode(studentID,encodePassword);
+        saveUserPasswordEncodeRepository.save(sp);
         studentRepository.save(s);
         int rs = (int) sysUserRepository.count();
         SysUser user = new SysUser();
@@ -365,7 +408,8 @@ public class WebController {
 
     @RequestMapping("/login")
     public String login(Model model) {
-        Msg msg = new Msg("欢迎登录","请输入你的注册学号和对应的密码","");
+        Msg msg = new Msg("欢迎登录","请输入你的注册学号和对应的密码,先进行密码校验方能进行登陆","");
+        model.addAttribute("key", false);
         model.addAttribute("msg",msg);
         return "page/Login";
     }

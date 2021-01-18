@@ -7,8 +7,11 @@
 
 package com.pyc.campus.security;
 
+import com.pyc.campus.bean.OptPassword;
+import com.pyc.campus.dao.SaveUserPasswordEncodeRepository;
 import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.dao.SysUserRepository;
+import com.pyc.campus.domain.SaveUserPasswordEncode;
 import com.pyc.campus.domain.SysUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
