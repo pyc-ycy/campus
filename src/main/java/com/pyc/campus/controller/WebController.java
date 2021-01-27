@@ -48,7 +48,7 @@ public class WebController {
         this.friendListRepository=friendListRepository;
         this.saveUserPasswordEncodeRepository = saveUserPasswordEncodeRepository;
     }
-    @RequestMapping("toCheckPassword")
+    @RequestMapping("/toCheckPassword")
     public String toCheckPassword(Model model){
         Msg msg = new Msg("提示","请先进行密码验证","");
         model.addAttribute("msg",msg);
@@ -83,32 +83,70 @@ public class WebController {
     public String desc(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        List<Grade> gradeListDesc = gradeRepository.findAllByStudentIDOrderByGradeDesc(currentStudentId);
-        int minGrade = gradeRepository.findMinGrade(currentStudentId);
-        int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
-        int sumCredit = gradeRepository.findSumCredit(currentStudentId);
-        float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
-        model.addAttribute("minGrade", minGrade);
-        model.addAttribute("maxGrade", maxGrade);
-        model.addAttribute("sumCredit", sumCredit);
-        model.addAttribute("avgGPA",avgGPA);
-        model.addAttribute("gradeItems", gradeListDesc);
+        if(gradeRepository.findAllByStudentID(currentStudentId)!=null){
+            try {
+
+                List<Grade> gradeListDesc = gradeRepository.findAllByStudentIDOrderByGradeDesc(currentStudentId);
+                model.addAttribute("gradeItems", gradeListDesc);
+                int minGrade = gradeRepository.findMinGrade(currentStudentId);
+                model.addAttribute("minGrade", minGrade);
+                int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
+                int sumCredit = gradeRepository.findSumCredit(currentStudentId);
+                float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
+                model.addAttribute("maxGrade", maxGrade);
+                model.addAttribute("sumCredit", sumCredit);
+                model.addAttribute("avgGPA",avgGPA);
+
+
+            } catch (Exception e) {
+               System.out.println(e.getMessage());
+                model.addAttribute("minGrade", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("maxGrade", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("sumCredit", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("avgGPA","未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("gradeItems", null);
+            }
+        }else {
+            model.addAttribute("minGrade", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("maxGrade", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("sumCredit", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("avgGPA","未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("gradeItems", null);
+        }
+
         return "page/QueryGrade";
     }
     @RequestMapping("/asc")
     public String asc(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        List<Grade> gradeListAsc = gradeRepository.findAllByStudentIDOrderByGradeAsc(currentStudentId);
-        int minGrade = gradeRepository.findMinGrade(currentStudentId);
-        int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
-        int sumCredit = gradeRepository.findSumCredit(currentStudentId);
-        float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
-        model.addAttribute("minGrade", minGrade);
-        model.addAttribute("maxGrade", maxGrade);
-        model.addAttribute("sumCredit", sumCredit);
-        model.addAttribute("avgGPA",avgGPA);
-        model.addAttribute("gradeItems", gradeListAsc);
+        if(gradeRepository.findAllByStudentID(currentStudentId)!=null){
+            try {
+                List<Grade> gradeListAsc = gradeRepository.findAllByStudentIDOrderByGradeAsc(currentStudentId);
+                int minGrade = gradeRepository.findMinGrade(currentStudentId);
+                int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
+                int sumCredit = gradeRepository.findSumCredit(currentStudentId);
+                float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
+                model.addAttribute("minGrade", minGrade);
+                model.addAttribute("maxGrade", maxGrade);
+                model.addAttribute("sumCredit", sumCredit);
+                model.addAttribute("avgGPA",avgGPA);
+                model.addAttribute("gradeItems", gradeListAsc);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                model.addAttribute("minGrade", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("maxGrade", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("sumCredit", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("avgGPA","未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("gradeItems", null);
+            }
+        } else {
+            model.addAttribute("minGrade", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("maxGrade", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("sumCredit", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("avgGPA","未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("gradeItems", null);
+        }
         return "page/QueryGrade";
     }
     @RequestMapping("/home")
@@ -406,13 +444,13 @@ public class WebController {
         return "page/Index";
     }
 
-    @RequestMapping("/login")
+    /*@RequestMapping("/login")
     public String login(Model model) {
         Msg msg = new Msg("欢迎登录","请输入你的注册学号和对应的密码,先进行密码校验方能进行登陆","");
         model.addAttribute("key", false);
         model.addAttribute("msg",msg);
         return "page/Login";
-    }
+    }*/
     @RequestMapping("/toCheckFrozen")
     public String toCheckFrozen(Model model)
     {
@@ -539,16 +577,33 @@ public class WebController {
     public String toQueryGrade(Model model, HttpSession session){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        List<Grade> gradeList = gradeRepository.findAllByStudentID(currentStudentId);
-        int minGrade = gradeRepository.findMinGrade(currentStudentId);
-        int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
-        int sumCredit = gradeRepository.findSumCredit(currentStudentId);
-        float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
-        model.addAttribute("minGrade", minGrade);
-        model.addAttribute("maxGrade", maxGrade);
-        model.addAttribute("sumCredit", sumCredit);
-        model.addAttribute("avgGPA",avgGPA);
-        model.addAttribute("gradeItems", gradeList);
+        if(gradeRepository.findAllByStudentID(currentStudentId)!=null){
+            try {
+                List<Grade> gradeList = gradeRepository.findAllByStudentID(currentStudentId);
+                int minGrade = gradeRepository.findMinGrade(currentStudentId);
+                int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
+                int sumCredit = gradeRepository.findSumCredit(currentStudentId);
+                float avgGPA = gradeRepository.findAvgGPA(currentStudentId);
+                model.addAttribute("minGrade", minGrade);
+                model.addAttribute("maxGrade", maxGrade);
+                model.addAttribute("sumCredit", sumCredit);
+                model.addAttribute("avgGPA",avgGPA);
+                model.addAttribute("gradeItems", gradeList);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                model.addAttribute("minGrade", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("maxGrade", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("sumCredit", "未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("avgGPA","未查到你的课程成绩，亲您联系科任老师！");
+                model.addAttribute("gradeItems", null);
+            }
+        }else {
+            model.addAttribute("minGrade", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("maxGrade", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("sumCredit", "未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("avgGPA","未查到你的课程成绩，亲您联系科任老师！");
+            model.addAttribute("gradeItems", null);
+        }
         return "page/QueryGrade";
     }
     final GradeRepository gradeRepository;
@@ -672,7 +727,8 @@ public class WebController {
     public String publishQuestion(Model model, HttpSession session,
                                   @Param("mail")String mail,
                                   @RequestParam(value = "PublisherName", required = false)String publisher,
-                                  @RequestParam(value = "QuestionType", required = false)String type, @Param("content")String content, @Param("reward")String reward){
+                                  @RequestParam(value = "QuestionType", required = false)String type,
+                                  @Param("content")String content, @Param("reward")String reward){
         try{
             Question question = new Question();
             question.setPublisher(publisher);

@@ -40,7 +40,7 @@ public class UploadController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public  String upload(MultipartFile file, Model model){
         try{
-            String path = "D:\\users\\lenovo\\Spring项目\\campus\\upLoadFilesSet\\"+file.getOriginalFilename();
+            String path = "upLoadFilesSet/"+file.getOriginalFilename();
             FileUtils.writeByteArrayToFile(new File(path),
                     file.getBytes());
             jobParameters = new JobParametersBuilder()

@@ -1,3 +1,4 @@
+/*
 $(window).scroll(function(){
     let scrollT = document.documentElement.scrollTop || document.body.scrollTop;
     // console.log(scrollT);
@@ -9,4 +10,4 @@ $(window).scroll(function(){
         $(".a3").addClass("animated bounceInUp show").removeClass("fade");
         $(".a4").addClass("animated bounceInLeft show").removeClass("fade");
     }
-});
+});*/

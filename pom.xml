@@ -88,6 +88,13 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.19</version>
         </dependency>
+        <!--sqljdbc-->
+        <!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/sqljdbc -->
+       <!-- <dependency>
+            <groupId>com.microsfor.sqlserver</groupId>
+            <artifactId>sqljdbc4</artifactId>
+            <version>4.2.0</version>
+        </dependency>-->
         <!--批处理依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

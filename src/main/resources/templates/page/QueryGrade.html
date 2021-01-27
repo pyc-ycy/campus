@@ -79,6 +79,17 @@
                 <li>
                     请按格式进行条件查询
                 </li>
+                <li>
+                    <p style="font-size: 18px">
+                        成绩是衡量学生能力的重要参考指标之一，因此成绩如果过低将会导致不能参与评优，
+                        同时如果挂科门数过多，将不予以毕业资格。
+                        此外，学分也是重要的指标，关系到学生能否准时毕业，对于规定学年内尚不能修够学分要求的学生，
+                        将予以延毕直到其学分修够。
+                        同样的，平均绩点是衡量学生综合能力的参考指标，毕业要求平均绩点达到一定水平，不达标者同样
+                        不能获得毕业资格。
+                        因此，为了顺利毕业，请务必重视自己的成绩、学分和绩点，请务必认真努力学习。
+                    </p>
+                </li>
             </ul>
             <hr class="hidden-sm hidden-md hidden-lg">
         </div>
@@ -124,8 +135,11 @@
             </div>
             <br>
             <h3>
-                当前最低课程成绩：<b th:text="${minGrade}"></b>,最高成绩：<b th:text="${maxGrade}"></b>,
-                已获得学分：<b th:text="${sumCredit}"></b>,总平均绩点：<b th:text="${avgGPA}"></b>
+                当前最低课程成绩：
+                <b th:text="${minGrade}"></b>
+                ,最高成绩：<b th:text="${maxGrade}"></b>
+                , 已获得学分：<b th:text="${sumCredit}"></b>
+                ,总平均绩点：<b th:text="${avgGPA}"></b>
             </h3>
             <br>
             <div class="form-inline">
