@@ -21,10 +21,11 @@
 <body>
 <div style="margin: 5% 25%">
     <p th:if="${param.error}" class="bg-danger">账号处于冻结状态或用户名未注册</p>
-    <div class="starter-template">
+    <!--<div class="starter-template">
         <h1 th:text="${msg.title}"></h1>
         <p class="bg-primary" th:text="${msg.content}"></p>
-    </div>
+    </div>-->
+    <h1>登陆</h1>
     <form class="form-horizontal" name="form"  id="form" method="post" th:action="@{/login}"
           action="/login" onsubmit="return checkPWD(form.password,form.checkPassword)">
         <div class="input-group input-group-lg">
