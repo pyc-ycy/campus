@@ -8,6 +8,11 @@ import com.pyc.campus.domain.Grade;
 import com.pyc.campus.domain.Msg;
 import com.pyc.campus.domain.Question;
 import com.pyc.campus.domain.Student;
+import com.pyc.campus.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,13 +44,16 @@ public class AdminController {
     final QuestionRepository questionRepository;
 
     final SysUserRepository sysUserRepository;
+
+    final StudentService studentService;
     public AdminController(StudentRepository studentRepository,
-                           GradeRepository gradeRepository,SysUserRepository sysUserRepository,
-                           QuestionRepository questionRepository){
+                           GradeRepository gradeRepository, SysUserRepository sysUserRepository,
+                           QuestionRepository questionRepository, StudentService studentService){
         this.studentRepository = studentRepository;
         this.gradeRepository = gradeRepository;
         this.sysUserRepository = sysUserRepository;
         this.questionRepository = questionRepository;
+        this.studentService = studentService;
     }
     @RequestMapping("/admin")
     public String admin(Model model,HttpSession session){
@@ -57,25 +65,35 @@ public class AdminController {
     }
 
     @RequestMapping("/delStuByStuId")
-    public String delStuByStuId(Model model, HttpSession session, @RequestParam(value = "studentId", required = false)String stuId){
+    public String delStuByStuId(Model model, HttpSession session,
+                                @RequestParam(value = "studentId", required = false)String stuId,
+                                @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
         studentRepository.delByStudentID(stuId);
         sysUserRepository.delByUsername(stuId);
-        List<Student> students = studentRepository.findAll();
+        Page<Student> students = studentService.getStudentList(pageNum,pageSize);
         model.addAttribute("students", students);
+        model.addAttribute("prefix","/delStuByStuId");
         return "page/ManageUser";
     }
 
     @RequestMapping("/manageUser")
-    public String findUserExceptCurUser(Model model,HttpSession session){
-        List<Student> students = studentRepository.findAll();
+    public String findUserExceptCurUser(Model model,HttpSession session,
+                                        @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        Page<Student> students = studentService.getStudentList(pageNum,pageSize);
+        model.addAttribute("prefix","/manageUser");
         model.addAttribute("students", students);
         return "page/ManageUser";
     }
     @RequestMapping("/findUserByStudentIDLike")
     public String findUserByStudentIDLike(Model model, HttpSession session,
-                                          @RequestParam(value = "ClassPrefix", required = false)String classPrefix){
-        List<Student> students = studentRepository.query01(classPrefix+'%');
+                                          @RequestParam(value = "ClassPrefix", required = false)String classPrefix,
+                                          @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        Page<Student> students = studentService.getStudentListByStuIdLike(pageNum,pageSize,classPrefix);
         model.addAttribute("students", students);
+        model.addAttribute("prefix","/findUserByStudentIDLike");
         return "page/ManageUser";
     }
 

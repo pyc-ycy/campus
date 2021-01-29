@@ -3,6 +3,11 @@ package com.pyc.campus.controller;
 import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.domain.Msg;
 import com.pyc.campus.domain.Student;
+import com.pyc.campus.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +36,12 @@ public class StudentController {
     final
     StudentRepository studentRepository;
 
-    public StudentController(StudentRepository studentRepository){
+    final
+    StudentService studentService;
+
+    public StudentController(StudentRepository studentRepository, StudentService studentService){
         this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
     @RequestMapping("/userCenter")
@@ -123,7 +132,9 @@ public class StudentController {
 
     @RequestMapping("/saveFrozenInTrue")
     public String saveFrozenInTrue(Model model,HttpSession session,
-                                   @RequestParam(value = "studentId", required = false)String studentID){
+                                   @RequestParam(value = "studentId", required = false)String studentID,
+                                   @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                   @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
         int t = studentRepository.saveFrozen(true,studentID);
         if(t!=0){
             System.out.println("更新成功！");
@@ -132,7 +143,8 @@ public class StudentController {
         {
             System.out.println("更新失败！");
         }
-        List<Student> students = studentRepository.findAll();
+        Page<Student> students = studentService.getStudentList(pageNum,pageSize);
+        model.addAttribute("prefix","/saveFrozenInTrue");
         model.addAttribute("students", students);
         return "page/ManageUser";
 
@@ -140,7 +152,9 @@ public class StudentController {
 
     @RequestMapping("/saveFrozenInFalse")
     public String saveFrozenInFalse(Model model,HttpSession session,
-                                    @RequestParam(value = "studentId", required = false)String studentID){
+                                    @RequestParam(value = "studentId", required = false)String studentID,
+                                    @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
 
         int t = studentRepository.saveFrozen(false,studentID);
         if(t!=0){
@@ -150,7 +164,8 @@ public class StudentController {
         {
             System.out.println("更新失败！");
         }
-        List<Student> students = studentRepository.findAll();
+        Page<Student> students = studentService.getStudentList(pageNum,pageSize);
+        model.addAttribute("prefix","/saveFrozenInFalse");
         model.addAttribute("students", students);
         return "page/ManageUser";
 

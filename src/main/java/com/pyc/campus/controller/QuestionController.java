@@ -4,6 +4,11 @@ import com.pyc.campus.config.MailConfig;
 import com.pyc.campus.dao.QuestionRepository;
 import com.pyc.campus.domain.Msg;
 import com.pyc.campus.domain.Question;
+import com.pyc.campus.service.QuestionService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,20 +36,29 @@ public class QuestionController {
 
     final QuestionRepository questionRepository;
 
-    public QuestionController(QuestionRepository questionRepository){
+    final QuestionService questionService;
+
+    public QuestionController(QuestionRepository questionRepository, QuestionService questionService){
         this.questionRepository = questionRepository;
+        this.questionService = questionService;
     }
 
     @RequestMapping("/toBrowserQuestion")
-    public String toBrowserQuestion(Model model, HttpSession session){
-        List<Question> questions = questionRepository.findAll();
+    public String toBrowserQuestion(Model model, HttpSession session,
+                                    @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                    @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        Page<Question> questions = questionService.getQuestionList(pageNum,pageSize);
+        model.addAttribute("prefix","/toBrowserQuestion");
         model.addAttribute("questions", questions);
         return "page/BrowserQuestion";
     }
     @RequestMapping("/queryByQuestionType")
     public String queryByQuestionType(Model model, HttpSession session,
-                                      @RequestParam(value = "TypeOfQuestion", required = false)String type){
-        List<Question> questions = questionRepository.findAllByType(type);
+                                      @RequestParam(value = "TypeOfQuestion", required = false)String type,
+                                      @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
+        Page<Question> questions = questionService.getQuestionListByType(pageNum,pageSize,type);
+        model.addAttribute("prefix","/queryByQuestionType");
         model.addAttribute("questions", questions);
         return "page/BrowserQuestion";
     }

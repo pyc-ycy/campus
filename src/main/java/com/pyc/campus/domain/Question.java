@@ -7,19 +7,27 @@
 
 package com.pyc.campus.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Question {
+public class Question implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue
     private long id;
+    @Column(nullable = true,unique = true)
     private String publisher;   // 申请人
+    @Column(nullable = true,unique = true)
     private String mail;    // 邮箱
+    @Column(nullable = true,unique = true)
     private String type; // 问题类型
+    @Column(nullable = true,unique = true)
     private String content; // 问题内容
+    @Column(nullable = true,unique = true)
     private String reward; // 悬赏
     public Question(){
         super();
@@ -81,5 +89,17 @@ public class Question {
 
     public String getType() {
         return type;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", publisher='" + publisher + '\'' +
+                ", mail='" + mail + '\'' +
+                ", type='" + type + '\'' +
+                ", content='" + content + '\'' +
+                ", reward='" + reward + '\'' +
+                '}';
     }
 }

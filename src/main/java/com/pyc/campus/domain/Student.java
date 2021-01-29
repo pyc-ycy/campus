@@ -7,22 +7,33 @@
 
 package com.pyc.campus.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Student {
+public class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue
     private Long id;
+    @Column(nullable = true,unique = true)
     private String name;
+    @Column(nullable = true,unique = true)
     private String studentID;
+    @Column(nullable = true,unique = true)
     private String password;
+    @Column(nullable = true,unique = true)
     private String weChat;
+    @Column(nullable = true,unique = true)
     private String QQ;
+    @Column(nullable = true,unique = true)
     private int admin;
+    @Column(nullable = true,unique = true)
     private boolean onlineStatus;
+    @Column(nullable = true,unique = true)
     private boolean frozen;
 
     public Student() {
@@ -111,5 +122,20 @@ public class Student {
 
     public String getWeChat() {
         return weChat;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", studentID='" + studentID + '\'' +
+                ", password='" + password + '\'' +
+                ", weChat='" + weChat + '\'' +
+                ", QQ='" + QQ + '\'' +
+                ", admin=" + admin +
+                ", onlineStatus=" + onlineStatus +
+                ", frozen=" + frozen +
+                '}';
     }
 }

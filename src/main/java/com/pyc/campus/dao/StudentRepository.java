@@ -8,6 +8,8 @@
 package com.pyc.campus.dao;
 
 import com.pyc.campus.domain.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -41,10 +43,9 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Query("select s from Student s where s.studentID=?1")
     Student getOnlineStatus(String studentID);
     // 根据Student ID前缀查询
-    @Modifying
-    @Transactional
+
     @Query("select s from Student s where s.studentID like ?1")
-    List<Student> query01(String classPrefix);
+    Page<Student> query01(String classPrefix, Pageable p);
     @Modifying
     @Transactional
     @Query("delete from Student  where studentID=?1")
