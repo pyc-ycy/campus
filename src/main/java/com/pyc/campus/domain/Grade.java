@@ -7,23 +7,34 @@
 
 package com.pyc.campus.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class Grade {
+public class Grade implements Serializable {
     @Id
     @GeneratedValue
     long id;
+    @Column(nullable = true,unique = true)
     private String term;    // 学期
+    @Column(nullable = true,unique = true)
     private  String studentID;  // 学号
+    @Column(nullable = true,unique = true)
     private String name; // 学生姓名
+    @Column(nullable = true,unique = true)
     private String courseCode;  // 课程编号
+    @Column(nullable = true,unique = true)
     private String courseName;  // 课程名称
+    @Column(nullable = true,unique = true)
     private int grade;  // 课程成绩
+    @Column(nullable = true,unique = true)
     private float gpa;   // 绩点
+    @Column(nullable = true,unique = true)
     private int learnHour;  //学时
+    @Column(nullable = true,unique = true)
     private int credit; // 学分
     public Grade(){
         super();
@@ -122,4 +133,19 @@ public class Grade {
         this.term = term;
     }
 
+    @Override
+    public String toString() {
+        return "Grade{" +
+                "id=" + id +
+                ", term='" + term + '\'' +
+                ", studentID='" + studentID + '\'' +
+                ", name='" + name + '\'' +
+                ", courseCode='" + courseCode + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", grade=" + grade +
+                ", gpa=" + gpa +
+                ", learnHour=" + learnHour +
+                ", credit=" + credit +
+                '}';
+    }
 }

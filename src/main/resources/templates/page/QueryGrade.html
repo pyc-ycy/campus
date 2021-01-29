@@ -94,7 +94,7 @@
             <hr class="hidden-sm hidden-md hidden-lg">
         </div>
         <div class="col-md-8">
-            <form class="form-inline" name="form"  method="post" th:action="@{/queryByTerm}">
+            <!--<form class="form-inline" name="form"  method="post" th:action="@{/queryByTerm}">
                 <div class="form-group">
                     <label for="term" class="sr-only">学年学期</label>
                     <div class="input-group">
@@ -102,11 +102,12 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">查询</button>
-            </form>
+            </form>-->
             <div class="table-box">
                 <table class="table table-striped">
                     <thead>
                     <tr>
+                        <th>序号</th>
                         <th>学年学期</th>
                         <th>学号</th>
                         <th>姓名</th>
@@ -120,6 +121,7 @@
                     </thead>
                     <tbody th:if="${not #lists.isEmpty(gradeItems)}">
                     <tr th:each="grade:${gradeItems}">
+                        <th scope="row" th:text="${gradeStat.index + 1}">1</th>
                         <td th:text="${grade.term}"></td>
                         <td th:text="${grade.studentID}"></td>
                         <td th:text="${grade.name}"></td>
@@ -132,6 +134,36 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="modal-footer no-margin-top">
+                    <ul class="pagination pull-right no-margin">
+                        <!-- 首页 -->
+                        <li>
+                            <a th:href="${prefix}+'?pageNum=0'">首页</a>
+                        </li>
+
+                        <!-- 上一页 -->
+                        <li th:if="${gradeItems.hasPrevious()}">
+                            <!--/*@thymesVar id="previousPageable" type="org.springframework.data.domain.Page"*/-->
+                            <a th:href="${prefix}+'?pageNum=' + ${gradeItems.previousPageable().getPageNumber()}" th:text="上一页"></a>
+                        </li>
+
+                        <!-- 中间页 -->
+                        <li th:each="pageNum:${#numbers.sequence(0, gradeItems.getTotalPages() - 1)}">
+                            <a th:href="${prefix}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum ne gradeItems.pageable.getPageNumber()}"></a>
+                            <a th:href="${prefix}+'?pageNum=' + ${pageNum}" th:text="${pageNum + 1}" th:if="${pageNum eq gradeItems.pageable.getPageNumber()}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+                        </li>
+
+                        <!-- 下一页 -->
+                        <li th:if="${gradeItems.hasNext()}">
+                            <a th:href="${prefix}+'?pageNum=' + ${gradeItems.nextPageable().getPageNumber()}" th:text="下一页"></a>
+                        </li>
+
+                        <!-- 尾页 -->
+                        <li>
+                            <a th:href="${prefix}+'?pageNum=' + ${gradeItems.getTotalPages() - 1}">尾页</a>
+                        </li>
+
+                    </ul>
             </div>
             <br>
             <h3>
@@ -153,7 +185,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <div id="scroll">
     <div class="scrollItem" id="toTop">顶部</div>
     <div class="scrollItem" id="toBottom">底部</div>

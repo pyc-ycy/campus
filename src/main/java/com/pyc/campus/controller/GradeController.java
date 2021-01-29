@@ -5,12 +5,16 @@ import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.domain.Grade;
 import com.pyc.campus.domain.Msg;
 import com.pyc.campus.domain.Student;
+import com.pyc.campus.service.GradeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -29,23 +33,32 @@ import java.util.List;
 @Controller
 public class GradeController {
 
+    final
+    GradeService gradeService;
+
     final GradeRepository gradeRepository;
 
     final StudentRepository studentRepository;
 
-    public GradeController(GradeRepository gradeRepository,StudentRepository studentRepository){
+    public GradeController(GradeRepository gradeRepository, StudentRepository studentRepository,
+                           GradeService gradeService){
         this.gradeRepository = gradeRepository;
         this.studentRepository = studentRepository;
+        this.gradeService = gradeService;
     }
 
     @RequestMapping("/desc")
-    public String desc(Model model, HttpSession session){
+    public String desc(Model model, HttpSession session,
+                       @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                       @RequestParam(value = "pageSize", defaultValue = "3") int pageSize){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        model.addAttribute("prefix","/desc");
         if(gradeRepository.findAllByStudentID(currentStudentId)!=null){
             try {
 
-                List<Grade> gradeListDesc = gradeRepository.findAllByStudentIDOrderByGradeDesc(currentStudentId);
+                Page<Grade> gradeListDesc = gradeService.getGradeListByStuIDDESCByGrade(pageNum,pageSize,
+                        currentStudentId);
                 model.addAttribute("gradeItems", gradeListDesc);
                 int minGrade = gradeRepository.findMinGrade(currentStudentId);
                 model.addAttribute("minGrade", minGrade);
@@ -76,12 +89,16 @@ public class GradeController {
         return "page/QueryGrade";
     }
     @RequestMapping("/asc")
-    public String asc(Model model, HttpSession session){
+    public String asc(Model model, HttpSession session,
+                      @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                      @RequestParam(value = "pageSize", defaultValue = "3") int pageSize){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        model.addAttribute("prefix","/asc");
         if(gradeRepository.findAllByStudentID(currentStudentId)!=null){
             try {
-                List<Grade> gradeListAsc = gradeRepository.findAllByStudentIDOrderByGradeAsc(currentStudentId);
+                Page<Grade> gradeListAsc = gradeService.getGradeListByStuIDASCByGrade(pageNum,pageSize,
+                        currentStudentId);
                 int minGrade = gradeRepository.findMinGrade(currentStudentId);
                 int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
                 int sumCredit = gradeRepository.findSumCredit(currentStudentId);
@@ -110,12 +127,15 @@ public class GradeController {
     }
 
     @RequestMapping("/toQueryGrade")
-    public String toQueryGrade(Model model, HttpSession session){
+    public String toQueryGrade(Model model, HttpSession session,
+                               @RequestParam(value = "pageNum", defaultValue = "0") int pageNum,
+                               @RequestParam(value = "pageSize", defaultValue = "3") int pageSize){
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        model.addAttribute("prefix","/toQueryGrade");
         if(gradeRepository.findAllByStudentID(currentStudentId)!=null){
             try {
-                List<Grade> gradeList = gradeRepository.findAllByStudentID(currentStudentId);
+                Page<Grade> gradeList = gradeService.getGradeListByStuID(pageNum,pageSize,currentStudentId);
                 int minGrade = gradeRepository.findMinGrade(currentStudentId);
                 int maxGrade = gradeRepository.findMaxGrade(currentStudentId);
                 int sumCredit = gradeRepository.findSumCredit(currentStudentId);

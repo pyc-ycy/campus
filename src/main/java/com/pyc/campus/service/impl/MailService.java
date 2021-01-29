@@ -6,7 +6,7 @@
 //E-mail:2923616405@qq.com
 
 
-package com.pyc.campus.service;
+package com.pyc.campus.service.impl;
 
 public interface MailService {
     /**

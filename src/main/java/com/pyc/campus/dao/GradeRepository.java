@@ -9,6 +9,8 @@
 package com.pyc.campus.dao;
 
 import com.pyc.campus.domain.Grade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,6 +21,13 @@ import java.util.List;
 public interface GradeRepository extends JpaRepository<Grade, Long> {
     List<Grade> findAllByTermAndStudentID(String term,String studentId);
     List<Grade> findAllByStudentID(String studentId);
+
+    @Query("select g from Grade g where g.studentID=:stuId")
+    Page<Grade> getAllByStudentID(@Param("stuId") String stuID, Pageable pageable);
+
+    Page<Grade> getAllByStudentIDOrderByGradeDesc(@Param("stuId")String stuID, Pageable pageable);
+
+    Page<Grade> getAllByStudentIDOrderByGradeAsc(@Param("stuId")String stuId, Pageable pageable);
     @RestResource(path="findAllByName", rel="findAllByName")
     List<Grade> findAllByName(@Param("name")String name);
     // 按成绩降序排列
