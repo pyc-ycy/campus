@@ -5,12 +5,13 @@
 // Author:御承扬
 //E-mail:2923616405@qq.com
 
-package com.pyc.campus.controller;
+package com.pyc.campus.chat;
 
 import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.domain.PublishMessage;
 import com.pyc.campus.domain.ResponseMessage;
 import com.pyc.campus.domain.Student;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
+@Slf4j
 @Controller
 public class ChatController {
 
@@ -36,6 +38,7 @@ public class ChatController {
 
     @RequestMapping("/publicChatRoom")
     public String publicChatRoom(Model model, HttpSession session){
+        log.info("由用户进入公共聊天室....");
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         Student s = studentRepository.findNameByStudentID(currentStudentId);

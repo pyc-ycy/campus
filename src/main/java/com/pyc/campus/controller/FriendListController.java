@@ -5,6 +5,7 @@ import com.pyc.campus.dao.StudentRepository;
 import com.pyc.campus.domain.FriendList;
 import com.pyc.campus.domain.Msg;
 import com.pyc.campus.domain.Student;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,7 @@ import java.util.List;
  * @time 11:44
  * @E-mail 2923616405@qq.com
  **/
-
+@Slf4j
 @Controller
 public class FriendListController {
 
@@ -118,6 +119,7 @@ public class FriendListController {
 
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
+        log.info(currentStudentId + "发起与" + toName + "的私聊....");
         Student toUse = studentRepository.findNameByStudentID(toName);
         model.addAttribute("curUser", toUse);
         boolean s;

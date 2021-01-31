@@ -27,7 +27,7 @@
     </div>-->
     <h1>登陆</h1>
     <form class="form-horizontal" name="form"  id="form" method="post" th:action="@{/login}"
-          action="/login" onsubmit="return checkPWD(form.password,form.checkPassword)">
+          action="/login" onsubmit="return checkPWD(form.password,form.checkPassword,form.username)">
         <div class="input-group input-group-lg">
             <span class="input-group-addon" id="sizing-addon1">@</span>
             <input type="text" name="username" class="form-control" placeholder="studentID" aria-describedby="sizing-addon1">
@@ -50,8 +50,17 @@
     </form>
 </div>
 <script>
-    function checkPWD(password,checkPassword) {
-        if(password.value !== checkPassword.value){
+    function checkPWD(password,checkPassword,stuID) {
+        if(stuID.value===""){
+            alert("学号不得为空");
+            return false;
+        }
+        else if(password === ""){
+            alert("密码不得为空");
+            return false;
+        }
+        else if(password.value !== checkPassword.value){
+
             alert("密码不一致");
             return false;
         }else {
