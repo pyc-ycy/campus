@@ -38,7 +38,7 @@ public class ChatController {
 
     @RequestMapping("/publicChatRoom")
     public String publicChatRoom(Model model, HttpSession session){
-        log.info("由用户进入公共聊天室....");
+        log.info("有用户进入公共聊天室....");
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
         Student s = studentRepository.findNameByStudentID(currentStudentId);

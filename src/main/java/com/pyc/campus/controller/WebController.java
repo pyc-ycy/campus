@@ -185,13 +185,10 @@ public class WebController {
         return "page/Sign";
     }
 
-    /*@RequestMapping("/login")
-    public String login(Model model) {
-        Msg msg = new Msg("欢迎登录","请输入你的注册学号和对应的密码,先进行密码校验方能进行登陆","");
-        model.addAttribute("key", false);
-        model.addAttribute("msg",msg);
+    @RequestMapping("/login")
+    public String login() {
         return "page/Login";
-    }*/
+    }
     /*@RequestMapping("/toCheckFrozen")
     public String toCheckFrozen(Model model)
     {

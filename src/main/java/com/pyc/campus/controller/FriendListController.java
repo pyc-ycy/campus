@@ -119,7 +119,7 @@ public class FriendListController {
 
         SecurityContextImpl securityContext = (SecurityContextImpl)session.getAttribute("SPRING_SECURITY_CONTEXT");
         String currentStudentId = ((UserDetails) securityContext.getAuthentication().getPrincipal()).getUsername();
-        log.info(currentStudentId + "发起与" + toName + "的私聊....");
+        log.info(currentStudentId + "，发起与" + toName + "，的私聊....");
         Student toUse = studentRepository.findNameByStudentID(toName);
         model.addAttribute("curUser", toUse);
         boolean s;
