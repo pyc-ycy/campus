@@ -52,7 +52,7 @@ public class WebController {
     }
 
     @RequestMapping("/my/check")
-    public String checkPassword(Model model,
+    public String checkPassword(Model model,HttpSession session,
                                 @RequestParam("stuID")String stuID,
                                 @RequestParam("password")String password){
         SaveUserPasswordEncode sp = saveUserPasswordEncodeRepository.findAllByStuID(stuID);
@@ -66,6 +66,7 @@ public class WebController {
         System.out.println(stuID + ", " + password + ", " + decodePassword);
         Msg msg;
         if(decodePassword.equals(password)){
+            session.setAttribute("loginUser",stuID);
             msg = new Msg("提示","密码校验正确，请重新输入并单击登陆按钮进行登陆","");
             model.addAttribute("msg",msg);
             return "page/Login";

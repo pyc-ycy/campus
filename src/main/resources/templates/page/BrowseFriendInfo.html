@@ -122,7 +122,7 @@
     <div class="row">
         <div class="col-sm-4">
             <ul class="nav nav-pills nav-stacked">
-                <li><a href="#">信息查看</a> </li>
+                <li><a href="/userCenter">信息查看</a> </li>
                 <li><a href="/updateUserInfo">更新信息</a></li>
                 <li><a href="/sign">注册</a></li>
                 <li><a href="/toChangePWD">修改密码</a></li>
@@ -140,7 +140,7 @@
                 <h1 th:text="${msg.title}"></h1>
                 <p class="bg-primary" th:text="${msg.content}"></p>
             </div>
-            <div class="user-info" th:if="${not #lists.isEmpty(curUse)}">
+            <div class="user-info" th:if="${not #lists.isEmpty(stu)}">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">好友信息</h3>

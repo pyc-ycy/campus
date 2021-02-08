@@ -65,6 +65,7 @@ public class StudentController {
         studentRepository.setOnlineStatus(onlineStatus,currentStudentId);
         Msg msg = new Msg("","","");
         model.addAttribute("msg",msg);
+        model.addAttribute("curUse",s);
         return "page/UserCenter";
     }
     @RequestMapping("/toBrowseFriendInfo")
