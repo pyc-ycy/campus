@@ -7,6 +7,7 @@
 
 package com.pyc.campus.config;
 
+import com.pyc.campus.interceptor.AdminInterceptor;
 import com.pyc.campus.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,7 +24,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
-                .addPathPatterns("/login");
+                .addPathPatterns("/login")
+                .excludePathPatterns("/my/check","/my/**?**");
+        registry.addInterceptor(new AdminInterceptor())
+                .addPathPatterns("/manageUser","/toPublishQuestion","/toImportGrade","/publishNews")
+                .excludePathPatterns("/admin");
+
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -66,6 +67,10 @@ public class WebController {
         System.out.println(stuID + ", " + password + ", " + decodePassword);
         Msg msg;
         if(decodePassword.equals(password)){
+            Student student = studentRepository.findAllByStudentID(stuID);
+            if(student.getAdmin()==1){
+                session.setAttribute("admin",student.getAdmin());
+            }
             session.setAttribute("loginUser",stuID);
             msg = new Msg("提示","密码校验正确，请重新输入并单击登陆按钮进行登陆","");
             model.addAttribute("msg",msg);
@@ -186,10 +191,12 @@ public class WebController {
         return "page/Sign";
     }
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String login() {
         return "page/Login";
     }
+
+
     /*@RequestMapping("/toCheckFrozen")
     public String toCheckFrozen(Model model)
     {
@@ -216,6 +223,8 @@ public class WebController {
         model.addAttribute("msg", msg);
         return "page/CheckFrozen";
     }*/
+
+
     /*@RequestMapping("/test")
     public List<Grade> test(@Param("stuId")String studentId) {
         return gradeRepository.findAllByStudentID(studentId);

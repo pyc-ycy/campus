@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author 彭友聪
+ */
 public interface StudentRepository extends JpaRepository<Student,Long> {
     Student findPasswordByStudentID(String studentID);
     Student findNameByStudentID(String studentID);
@@ -50,4 +53,7 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Transactional
     @Query("delete from Student  where studentID=?1")
     void delByStudentID(String studentId);
+
+    @Query("select s.admin from Student as s where s.studentID=?1")
+    int findAdminByStudentID(String studentID);
 }
